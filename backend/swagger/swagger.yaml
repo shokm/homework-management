@@ -1,0 +1,76 @@
+swagger: "2.0"
+info: # infoオブジェクト
+  title: "task-management"
+  version: "1.0.0"
+host: "example.swagger.io"
+basePath: "/v1"
+schemes:
+- "http"
+paths: # pathsオブジェクト
+  /auth/login:
+    post:
+      tags:
+      - "AuthApi"
+      summary: "ログイン認証"
+      operationId: "postAuthLogin"
+      produces:
+      - "application/json"
+      parameters: # parameterオブジェクトの配列
+      - name: "body"
+        in: "body"
+        description: "body"
+        required: true
+        schema: # schemaオブジェクト
+            $ref: "#/definitions/AuthUserReq"
+      responses: # responsesオブジェクト
+        200:
+          description: "ログイン成功"
+          schema: # schemaオブジェクト
+            $ref: "#/definitions/AuthReturnJWT"
+            # definitionsに定義されたオブジェクトを参照
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+        503:
+          description: "Service Unavailable"
+  /auth/register:
+    post:
+      tags:
+      - "AuthApi"
+      summary: "ユーザー登録"
+      operationId: "postAuthRegister"
+      produces:
+      - "application/json"
+      parameters: # parameterオブジェクトの配列
+      - name: "body"
+        in: "body"
+        description: "body"
+        required: true
+        schema: # schemaオブジェクト
+            $ref: "#/definitions/AuthUserReq"
+      responses: # responsesオブジェクト
+        200:
+          description: "ユーザー登録成功"
+          schema: # schemaオブジェクト
+            $ref: "#/definitions/AuthReturnJWT"
+            # definitionsに定義されたオブジェクトを参照
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+        503:
+          description: "Service Unavailable"
+definitions: # definitionsオブジェクト
+  AuthUserReq: # schemaオブジェクト
+    type: "object"
+    properties:
+      screen_name: # schemaオブジェクト
+        type: "string"
+      password: # schemaオブジェクト
+        type: "string"
+  AuthReturnJWT: # schemaオブジェクト
+    type: "object"
+    properties:
+      token: # schemaオブジェクト
+        type: "string"
