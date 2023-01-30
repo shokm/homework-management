@@ -23,7 +23,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "title": "task-management",
+    "title": "homework-management",
     "version": "1.0.0"
   },
   "host": "example.swagger.io",
@@ -108,6 +108,40 @@ func init() {
           }
         }
       }
+    },
+    "/auth/user": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "AuthApi"
+        ],
+        "summary": "ユーザー情報返却",
+        "operationId": "postAuthUser",
+        "responses": {
+          "200": {
+            "description": "ユーザー登録成功",
+            "schema": {
+              "$ref": "#/definitions/AuthReturnUser"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -116,6 +150,18 @@ func init() {
       "properties": {
         "token": {
           "type": "string"
+        }
+      }
+    },
+    "AuthReturnUser": {
+      "type": "object",
+      "properties": {
+        "screen_name": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "number",
+          "format": "int64"
         }
       }
     },
@@ -129,6 +175,14 @@ func init() {
           "type": "string"
         }
       }
+    }
+  },
+  "securityDefinitions": {
+    "bearerAuth": {
+      "description": "JWT Authorization header",
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
   }
 }`))
@@ -138,7 +192,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "title": "task-management",
+    "title": "homework-management",
     "version": "1.0.0"
   },
   "host": "example.swagger.io",
@@ -223,6 +277,40 @@ func init() {
           }
         }
       }
+    },
+    "/auth/user": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "AuthApi"
+        ],
+        "summary": "ユーザー情報返却",
+        "operationId": "postAuthUser",
+        "responses": {
+          "200": {
+            "description": "ユーザー登録成功",
+            "schema": {
+              "$ref": "#/definitions/AuthReturnUser"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -231,6 +319,18 @@ func init() {
       "properties": {
         "token": {
           "type": "string"
+        }
+      }
+    },
+    "AuthReturnUser": {
+      "type": "object",
+      "properties": {
+        "screen_name": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "number",
+          "format": "int64"
         }
       }
     },
@@ -244,6 +344,14 @@ func init() {
           "type": "string"
         }
       }
+    }
+  },
+  "securityDefinitions": {
+    "bearerAuth": {
+      "description": "JWT Authorization header",
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
   }
 }`))

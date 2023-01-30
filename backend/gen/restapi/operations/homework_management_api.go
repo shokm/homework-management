@@ -22,9 +22,9 @@ import (
 	"backend/gen/restapi/operations/auth_api"
 )
 
-// NewTaskManagementAPI creates a new TaskManagement instance
-func NewTaskManagementAPI(spec *loads.Document) *TaskManagementAPI {
-	return &TaskManagementAPI{
+// NewHomeworkManagementAPI creates a new HomeworkManagement instance
+func NewHomeworkManagementAPI(spec *loads.Document) *HomeworkManagementAPI {
+	return &HomeworkManagementAPI{
 		handlers:            make(map[string]map[string]http.Handler),
 		formats:             strfmt.Default,
 		defaultConsumes:     "application/json",
@@ -50,11 +50,21 @@ func NewTaskManagementAPI(spec *loads.Document) *TaskManagementAPI {
 		AuthAPIPostAuthRegisterHandler: auth_api.PostAuthRegisterHandlerFunc(func(params auth_api.PostAuthRegisterParams) middleware.Responder {
 			return middleware.NotImplemented("operation auth_api.PostAuthRegister has not yet been implemented")
 		}),
+		AuthAPIPostAuthUserHandler: auth_api.PostAuthUserHandlerFunc(func(params auth_api.PostAuthUserParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation auth_api.PostAuthUser has not yet been implemented")
+		}),
+
+		// Applies when the "Authorization" header is set
+		BearerAuthAuth: func(token string) (interface{}, error) {
+			return nil, errors.NotImplemented("api key auth (bearerAuth) Authorization from header param [Authorization] has not yet been implemented")
+		},
+		// default authorizer is authorized meaning no requests are blocked
+		APIAuthorizer: security.Authorized(),
 	}
 }
 
-/*TaskManagementAPI the task management API */
-type TaskManagementAPI struct {
+/*HomeworkManagementAPI the homework management API */
+type HomeworkManagementAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
 	handlers        map[string]map[string]http.Handler
@@ -86,10 +96,19 @@ type TaskManagementAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// BearerAuthAuth registers a function that takes a token and returns a principal
+	// it performs authentication based on an api key Authorization provided in the header
+	BearerAuthAuth func(string) (interface{}, error)
+
+	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
+	APIAuthorizer runtime.Authorizer
+
 	// AuthAPIPostAuthLoginHandler sets the operation handler for the post auth login operation
 	AuthAPIPostAuthLoginHandler auth_api.PostAuthLoginHandler
 	// AuthAPIPostAuthRegisterHandler sets the operation handler for the post auth register operation
 	AuthAPIPostAuthRegisterHandler auth_api.PostAuthRegisterHandler
+	// AuthAPIPostAuthUserHandler sets the operation handler for the post auth user operation
+	AuthAPIPostAuthUserHandler auth_api.PostAuthUserHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -111,52 +130,52 @@ type TaskManagementAPI struct {
 }
 
 // UseRedoc for documentation at /docs
-func (o *TaskManagementAPI) UseRedoc() {
+func (o *HomeworkManagementAPI) UseRedoc() {
 	o.useSwaggerUI = false
 }
 
 // UseSwaggerUI for documentation at /docs
-func (o *TaskManagementAPI) UseSwaggerUI() {
+func (o *HomeworkManagementAPI) UseSwaggerUI() {
 	o.useSwaggerUI = true
 }
 
 // SetDefaultProduces sets the default produces media type
-func (o *TaskManagementAPI) SetDefaultProduces(mediaType string) {
+func (o *HomeworkManagementAPI) SetDefaultProduces(mediaType string) {
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
-func (o *TaskManagementAPI) SetDefaultConsumes(mediaType string) {
+func (o *HomeworkManagementAPI) SetDefaultConsumes(mediaType string) {
 	o.defaultConsumes = mediaType
 }
 
 // SetSpec sets a spec that will be served for the clients.
-func (o *TaskManagementAPI) SetSpec(spec *loads.Document) {
+func (o *HomeworkManagementAPI) SetSpec(spec *loads.Document) {
 	o.spec = spec
 }
 
 // DefaultProduces returns the default produces media type
-func (o *TaskManagementAPI) DefaultProduces() string {
+func (o *HomeworkManagementAPI) DefaultProduces() string {
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
-func (o *TaskManagementAPI) DefaultConsumes() string {
+func (o *HomeworkManagementAPI) DefaultConsumes() string {
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
-func (o *TaskManagementAPI) Formats() strfmt.Registry {
+func (o *HomeworkManagementAPI) Formats() strfmt.Registry {
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
-func (o *TaskManagementAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+func (o *HomeworkManagementAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
 	o.formats.Add(name, format, validator)
 }
 
-// Validate validates the registrations in the TaskManagementAPI
-func (o *TaskManagementAPI) Validate() error {
+// Validate validates the registrations in the HomeworkManagementAPI
+func (o *HomeworkManagementAPI) Validate() error {
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -167,11 +186,18 @@ func (o *TaskManagementAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.BearerAuthAuth == nil {
+		unregistered = append(unregistered, "AuthorizationAuth")
+	}
+
 	if o.AuthAPIPostAuthLoginHandler == nil {
 		unregistered = append(unregistered, "auth_api.PostAuthLoginHandler")
 	}
 	if o.AuthAPIPostAuthRegisterHandler == nil {
 		unregistered = append(unregistered, "auth_api.PostAuthRegisterHandler")
+	}
+	if o.AuthAPIPostAuthUserHandler == nil {
+		unregistered = append(unregistered, "auth_api.PostAuthUserHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -182,23 +208,32 @@ func (o *TaskManagementAPI) Validate() error {
 }
 
 // ServeErrorFor gets a error handler for a given operation id
-func (o *TaskManagementAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+func (o *HomeworkManagementAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
-func (o *TaskManagementAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
-	return nil
+func (o *HomeworkManagementAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+	result := make(map[string]runtime.Authenticator)
+	for name := range schemes {
+		switch name {
+		case "bearerAuth":
+			scheme := schemes[name]
+			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, o.BearerAuthAuth)
+
+		}
+	}
+	return result
 }
 
 // Authorizer returns the registered authorizer
-func (o *TaskManagementAPI) Authorizer() runtime.Authorizer {
-	return nil
+func (o *HomeworkManagementAPI) Authorizer() runtime.Authorizer {
+	return o.APIAuthorizer
 }
 
 // ConsumersFor gets the consumers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *TaskManagementAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+func (o *HomeworkManagementAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -215,7 +250,7 @@ func (o *TaskManagementAPI) ConsumersFor(mediaTypes []string) map[string]runtime
 
 // ProducersFor gets the producers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *TaskManagementAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+func (o *HomeworkManagementAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 	result := make(map[string]runtime.Producer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -231,7 +266,7 @@ func (o *TaskManagementAPI) ProducersFor(mediaTypes []string) map[string]runtime
 }
 
 // HandlerFor gets a http.Handler for the provided operation method and path
-func (o *TaskManagementAPI) HandlerFor(method, path string) (http.Handler, bool) {
+func (o *HomeworkManagementAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -246,8 +281,8 @@ func (o *TaskManagementAPI) HandlerFor(method, path string) (http.Handler, bool)
 	return h, ok
 }
 
-// Context returns the middleware context for the task management API
-func (o *TaskManagementAPI) Context() *middleware.Context {
+// Context returns the middleware context for the homework management API
+func (o *HomeworkManagementAPI) Context() *middleware.Context {
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -255,7 +290,7 @@ func (o *TaskManagementAPI) Context() *middleware.Context {
 	return o.context
 }
 
-func (o *TaskManagementAPI) initHandlerCache() {
+func (o *HomeworkManagementAPI) initHandlerCache() {
 	o.Context() // don't care about the result, just that the initialization happened
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
@@ -269,11 +304,15 @@ func (o *TaskManagementAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/auth/register"] = auth_api.NewPostAuthRegister(o.context, o.AuthAPIPostAuthRegisterHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/auth/user"] = auth_api.NewPostAuthUser(o.context, o.AuthAPIPostAuthUserHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
-func (o *TaskManagementAPI) Serve(builder middleware.Builder) http.Handler {
+func (o *HomeworkManagementAPI) Serve(builder middleware.Builder) http.Handler {
 	o.Init()
 
 	if o.Middleware != nil {
@@ -286,24 +325,24 @@ func (o *TaskManagementAPI) Serve(builder middleware.Builder) http.Handler {
 }
 
 // Init allows you to just initialize the handler cache, you can then recompose the middleware as you see fit
-func (o *TaskManagementAPI) Init() {
+func (o *HomeworkManagementAPI) Init() {
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}
 }
 
 // RegisterConsumer allows you to add (or override) a consumer for a media type.
-func (o *TaskManagementAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
+func (o *HomeworkManagementAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
 	o.customConsumers[mediaType] = consumer
 }
 
 // RegisterProducer allows you to add (or override) a producer for a media type.
-func (o *TaskManagementAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
+func (o *HomeworkManagementAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
 	o.customProducers[mediaType] = producer
 }
 
 // AddMiddlewareFor adds a http middleware to existing handler
-func (o *TaskManagementAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
+func (o *HomeworkManagementAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
 	um := strings.ToUpper(method)
 	if path == "/" {
 		path = ""

@@ -3,6 +3,8 @@ package auth
 import (
 	"backend/gen/models"
 	"backend/handler/database"
+	"errors"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -30,4 +32,31 @@ func GetTokenHandler(body database.UserLists) models.AuthReturnJWT {
 	result.Token = tokenString
 
 	return result
+}
+
+func ValidateTokenHandler(tokenHeader string) (interface{}, error) {
+
+	// ヘッダからbearer...を切り離す
+	tokenString := strings.Split(tokenHeader, " ")[1]
+
+	// 認証
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+		// TODO: キーを設定
+		return []byte("SECRET_KEY"), nil
+	})
+
+	result := models.AuthReturnUser{}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		result.UserID = int64(claims["user_id"].(float64))
+		result.ScreenName = string(claims["screen_name"].(string))
+	} else {
+		// TODO: エラーを正しく書く
+		return nil, errors.New(err.Error())
+	}
+
+	return result, nil
 }

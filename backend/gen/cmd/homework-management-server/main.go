@@ -23,12 +23,12 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	api := operations.NewTaskManagementAPI(swaggerSpec)
+	api := operations.NewHomeworkManagementAPI(swaggerSpec)
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 
 	parser := flags.NewParser(server, flags.Default)
-	parser.ShortDescription = "task-management"
+	parser.ShortDescription = "homework-management"
 	parser.LongDescription = swaggerSpec.Spec().Info.Description
 	server.ConfigureFlags()
 	for _, optsGroup := range api.CommandLineOptionsGroups {

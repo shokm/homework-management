@@ -11,17 +11,17 @@ import (
 
 	"backend/gen/restapi/operations"
 	"backend/gen/restapi/operations/auth_api"
-
 	"backend/handler"
+	"backend/handler/auth"
 )
 
-//go:generate swagger generate server --target ../../gen --name TaskManagement --spec ../../swagger/swagger.yaml --principal interface{}
+//go:generate swagger generate server --target ../../gen --name HomeworkManagement --spec ../../swagger/swagger.yaml --principal interface{}
 
-func configureFlags(api *operations.TaskManagementAPI) {
+func configureFlags(api *operations.HomeworkManagementAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
-func configureAPI(api *operations.TaskManagementAPI) http.Handler {
+func configureAPI(api *operations.HomeworkManagementAPI) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
 
@@ -39,25 +39,48 @@ func configureAPI(api *operations.TaskManagementAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
+	// Applies when the "Authorization" header is set
+	/*
+	if api.BearerAuthAuth == nil {
+		api.BearerAuthAuth = func(token string) (interface{}, error) {
+			return nil, errors.NotImplemented("api key auth (bearerAuth) Authorization from header param [Authorization] has not yet been implemented")
+		}
+	}
+	*/
+	api.BearerAuthAuth = auth.ValidateTokenHandler
+
+	// Set your custom authorizer if needed. Default one is security.Authorized()
+	// Expected interface runtime.Authorizer
+	//
+	// Example:
+	// api.APIAuthorizer = security.Authorized()
+
 	/*
 	if api.AuthAPIPostAuthLoginHandler == nil {
-		api.AuthPostAuthLoginHandler = auth.PostAuthLoginHandlerFunc(func(params auth.PostAuthLoginParams) middleware.Responder {
-			return middleware.NotImplemented("operation auth.PostAuthLogin has not yet been implemented")
+		api.AuthAPIPostAuthLoginHandler = auth_api.PostAuthLoginHandlerFunc(func(params auth_api.PostAuthLoginParams) middleware.Responder {
+			return middleware.NotImplemented("operation auth_api.PostAuthLogin has not yet been implemented")
 		})
 	}
 	*/
-	// add
 	api.AuthAPIPostAuthLoginHandler = auth_api.PostAuthLoginHandlerFunc(handler.PostAuthLogin)
 
 	/*
 	if api.AuthAPIPostAuthRegisterHandler == nil {
-		api.AuthPostAuthRegisterHandler = auth.PostAuthRegisterHandlerFunc(func(params auth.PostAuthRegisterParams) middleware.Responder {
-			return middleware.NotImplemented("operation auth.PostAuthRegister has not yet been implemented")
+		api.AuthAPIPostAuthRegisterHandler = auth_api.PostAuthRegisterHandlerFunc(func(params auth_api.PostAuthRegisterParams) middleware.Responder {
+			return middleware.NotImplemented("operation auth_api.PostAuthRegister has not yet been implemented")
 		})
 	}
 	*/
-	// add
 	api.AuthAPIPostAuthRegisterHandler = auth_api.PostAuthRegisterHandlerFunc(handler.PostAuthRegister)
+
+	/*
+	if api.AuthAPIPostAuthUserHandler == nil {
+		api.AuthAPIPostAuthUserHandler = auth_api.PostAuthUserHandlerFunc(func(params auth_api.PostAuthUserParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation auth_api.PostAuthUser has not yet been implemented")
+		})
+	}
+	*/
+	api.AuthAPIPostAuthUserHandler = auth_api.PostAuthUserHandlerFunc(handler.PostAuthUser)
 
 	api.PreServerShutdown = func() {}
 
