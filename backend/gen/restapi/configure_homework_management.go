@@ -12,7 +12,7 @@ import (
 	"backend/gen/restapi/operations"
 	"backend/gen/restapi/operations/auth_api"
 	"backend/handler"
-	"backend/handler/auth"
+	"backend/handler/auth_jwt"
 )
 
 //go:generate swagger generate server --target ../../gen --name HomeworkManagement --spec ../../swagger/swagger.yaml --principal interface{}
@@ -47,7 +47,7 @@ func configureAPI(api *operations.HomeworkManagementAPI) http.Handler {
 		}
 	}
 	*/
-	api.BearerAuthAuth = auth.ValidateTokenHandler
+	api.BearerAuthAuth = auth_jwt.ValidateTokenHandler
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
 	// Expected interface runtime.Authorizer

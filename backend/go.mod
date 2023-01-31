@@ -12,6 +12,7 @@ require (
 	github.com/go-openapi/swag v0.22.3
 	github.com/go-openapi/validate v0.22.1
 	github.com/jessevdk/go-flags v1.5.0
+	github.com/joho/godotenv v1.3.0
 	golang.org/x/net v0.5.0
 	gorm.io/driver/postgres v1.4.6
 	gorm.io/gorm v1.24.3

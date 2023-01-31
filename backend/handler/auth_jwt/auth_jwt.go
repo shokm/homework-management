@@ -1,8 +1,9 @@
-package auth
+package auth_jwt
 
 import (
 	"backend/gen/models"
 	"backend/handler/database"
+	"backend/handler/dotenv"
 	"errors"
 	"strings"
 	"time"
@@ -10,7 +11,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-func GetTokenHandler(body database.UserLists) models.AuthReturnJWT {
+func GetTokenHandler(body database.UserLists) (models.AuthReturnJWT, error) {
 
 	// 返却値
 	result := models.AuthReturnJWT{}
@@ -25,13 +26,20 @@ func GetTokenHandler(body database.UserLists) models.AuthReturnJWT {
 	// トークン生成
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
+	// キーの読み込み
+	seacretKeyLoadByDotenv, err := dotenv.LoadJWTSecretKey()
+	if err != nil {
+		return result, errors.New("failed to read secret key")
+	}
 	// トークンに署名を付与
-	tokenString, err := token.SignedString([]byte("SECRET_KEY"))
-	if err != nil {}
+	tokenString, err := token.SignedString([]byte(seacretKeyLoadByDotenv.(string)))
+	if err != nil {
+		return result, errors.New("signing failure")
+	}
 
 	result.Token = tokenString
 
-	return result
+	return result, nil
 }
 
 func ValidateTokenHandler(tokenHeader string) (interface{}, error) {
@@ -44,8 +52,13 @@ func ValidateTokenHandler(tokenHeader string) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
 		}
-		// TODO: キーを設定
-		return []byte("SECRET_KEY"), nil
+		// キーの読み込み
+		seacretKeyLoadByDotenv, err := dotenv.LoadJWTSecretKey()
+		if err != nil {
+			return nil, errors.New("failed to read secret key")
+		}
+		// 署名を設定
+		return []byte(seacretKeyLoadByDotenv.(string)), nil
 	})
 
 	result := models.AuthReturnUser{}
@@ -54,7 +67,6 @@ func ValidateTokenHandler(tokenHeader string) (interface{}, error) {
 		result.UserID = int64(claims["user_id"].(float64))
 		result.ScreenName = string(claims["screen_name"].(string))
 	} else {
-		// TODO: エラーを正しく書く
 		return nil, errors.New(err.Error())
 	}
 
