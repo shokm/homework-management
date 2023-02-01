@@ -49,7 +49,7 @@ func LoginAuthDB(body models.AuthUserReq) error {
 	// 入力されたパスワードのハッシュ化
 	b := []byte(body.Password)
 	sha256 := sha256.Sum256(b)
-    hashedInputPassword := hex.EncodeToString(sha256[:])
+	hashedInputPassword := hex.EncodeToString(sha256[:])
 
 	// パスワードの比較
 	if userInfo.Password != hashedInputPassword {
@@ -117,7 +117,7 @@ func CreateUserDB(body models.AuthUserReq) error {
 	// パスワードのハッシュ化
 	b := []byte(body.Password)
 	sha256 := sha256.Sum256(b)
-    hashedPassword := hex.EncodeToString(sha256[:])
+	hashedPassword := hex.EncodeToString(sha256[:])
 
 	// 構造体作成
 	UserLists := UserLists{}
