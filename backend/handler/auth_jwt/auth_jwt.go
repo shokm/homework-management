@@ -4,6 +4,7 @@ import (
 	"backend/gen/models"
 	"backend/handler/database"
 	"backend/handler/dotenv"
+	"crypto/sha256"
 	"errors"
 	"strings"
 	"time"
@@ -31,8 +32,11 @@ func GetTokenHandler(body database.UserLists) (models.AuthReturnJWT, error) {
 	if err != nil {
 		return result, errors.New("failed to read secret key")
 	}
+	// キーをハッシュ化
+	b := []byte(seacretKeyLoadByDotenv.(string))
+	sha256 := sha256.Sum256(b)
 	// トークンに署名を付与
-	tokenString, err := token.SignedString([]byte(seacretKeyLoadByDotenv.(string)))
+	tokenString, err := token.SignedString([]byte(sha256[:]))
 	if err != nil {
 		return result, errors.New("signing failure")
 	}
@@ -57,8 +61,11 @@ func ValidateTokenHandler(tokenHeader string) (interface{}, error) {
 		if err != nil {
 			return nil, errors.New("failed to read secret key")
 		}
+		// キーをハッシュ化
+		b := []byte(seacretKeyLoadByDotenv.(string))
+		sha256 := sha256.Sum256(b)
 		// 署名を設定
-		return []byte(seacretKeyLoadByDotenv.(string)), nil
+		return []byte(sha256[:]), nil
 	})
 
 	result := models.AuthReturnUser{}

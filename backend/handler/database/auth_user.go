@@ -21,7 +21,7 @@ func LoginAuthDB(body models.AuthUserReq) error {
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect database")
+		return errors.New("failed to connect database")
 	}
 
 	// スクリーンネームとパスワードが空だった場合、エラー
@@ -81,7 +81,7 @@ func CreateUserDB(body models.AuthUserReq) error {
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect database")
+		return errors.New("failed to connect database")
 	}
 
 	// スクリーンネームとパスワードが空だった場合、エラー
