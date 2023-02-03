@@ -100,9 +100,9 @@ paths: # pathsオブジェクト
       produces:
       - "application/json"
       parameters: # parameterオブジェクトの配列
-      - name: "includeArchived"
+      - name: "isArchived"
         in: "query"
-        description: "アーカイブされた教科を含めるか（デフォルトでは含まれない）"
+        description: "アーカイブされた教科だけ取得するか（デフォルトでは含まれない）"
         type: "boolean"
       responses: # responsesオブジェクト
         200:
@@ -129,9 +129,9 @@ paths: # pathsオブジェクト
       produces:
       - "application/json"
       parameters: # parameterオブジェクトの配列
-      - name: "includeArchived"
+      - name: "isArchived"
         in: "query"
-        description: "アーカイブされた教科を含めるか（デフォルトでは含まれない）"
+        description: "アーカイブされた教科だけ取得するか（デフォルトでは含まれない）"
         type: "boolean"
       responses: # responsesオブジェクト
         200:
@@ -223,9 +223,9 @@ paths: # pathsオブジェクト
       produces:
       - "application/json"
       parameters: # parameterオブジェクトの配列
-      - name: "includeArchived"
+      - name: "isArchived"
         in: "query"
-        description: "アーカイブされたタスクを含めるか（デフォルトでは含まれない）"
+        description: "アーカイブされた課題だけ取得するか（デフォルトでは含まれない）"
         type: "boolean"
       responses: # responsesオブジェクト
         200:

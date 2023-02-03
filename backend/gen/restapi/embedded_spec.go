@@ -259,8 +259,8 @@ func init() {
         "parameters": [
           {
             "type": "boolean",
-            "description": "アーカイブされた教科を含めるか（デフォルトでは含まれない）",
-            "name": "includeArchived",
+            "description": "アーカイブされた教科だけ取得するか（デフォルトでは含まれない）",
+            "name": "isArchived",
             "in": "query"
           }
         ],
@@ -304,8 +304,8 @@ func init() {
         "parameters": [
           {
             "type": "boolean",
-            "description": "アーカイブされた教科を含めるか（デフォルトでは含まれない）",
-            "name": "includeArchived",
+            "description": "アーカイブされた教科だけ取得するか（デフォルトでは含まれない）",
+            "name": "isArchived",
             "in": "query"
           }
         ],
@@ -447,8 +447,8 @@ func init() {
         "parameters": [
           {
             "type": "boolean",
-            "description": "アーカイブされたタスクを含めるか（デフォルトでは含まれない）",
-            "name": "includeArchived",
+            "description": "アーカイブされた課題だけ取得するか（デフォルトでは含まれない）",
+            "name": "isArchived",
             "in": "query"
           }
         ],
@@ -881,8 +881,8 @@ func init() {
         "parameters": [
           {
             "type": "boolean",
-            "description": "アーカイブされた教科を含めるか（デフォルトでは含まれない）",
-            "name": "includeArchived",
+            "description": "アーカイブされた教科だけ取得するか（デフォルトでは含まれない）",
+            "name": "isArchived",
             "in": "query"
           }
         ],
@@ -926,8 +926,8 @@ func init() {
         "parameters": [
           {
             "type": "boolean",
-            "description": "アーカイブされた教科を含めるか（デフォルトでは含まれない）",
-            "name": "includeArchived",
+            "description": "アーカイブされた教科だけ取得するか（デフォルトでは含まれない）",
+            "name": "isArchived",
             "in": "query"
           }
         ],
@@ -1069,8 +1069,8 @@ func init() {
         "parameters": [
           {
             "type": "boolean",
-            "description": "アーカイブされたタスクを含めるか（デフォルトでは含まれない）",
-            "name": "includeArchived",
+            "description": "アーカイブされた課題だけ取得するか（デフォルトでは含まれない）",
+            "name": "isArchived",
             "in": "query"
           }
         ],

@@ -32,10 +32,10 @@ type GetTasksParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
-	/*アーカイブされたタスクを含めるか（デフォルトでは含まれない）
+	/*アーカイブされた課題だけ取得するか（デフォルトでは含まれない）
 	  In: query
 	*/
-	IncludeArchived *bool
+	IsArchived *bool
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -49,8 +49,8 @@ func (o *GetTasksParams) BindRequest(r *http.Request, route *middleware.MatchedR
 
 	qs := runtime.Values(r.URL.Query())
 
-	qIncludeArchived, qhkIncludeArchived, _ := qs.GetOK("includeArchived")
-	if err := o.bindIncludeArchived(qIncludeArchived, qhkIncludeArchived, route.Formats); err != nil {
+	qIsArchived, qhkIsArchived, _ := qs.GetOK("isArchived")
+	if err := o.bindIsArchived(qIsArchived, qhkIsArchived, route.Formats); err != nil {
 		res = append(res, err)
 	}
 	if len(res) > 0 {
@@ -59,8 +59,8 @@ func (o *GetTasksParams) BindRequest(r *http.Request, route *middleware.MatchedR
 	return nil
 }
 
-// bindIncludeArchived binds and validates parameter IncludeArchived from query.
-func (o *GetTasksParams) bindIncludeArchived(rawData []string, hasKey bool, formats strfmt.Registry) error {
+// bindIsArchived binds and validates parameter IsArchived from query.
+func (o *GetTasksParams) bindIsArchived(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
@@ -75,9 +75,9 @@ func (o *GetTasksParams) bindIncludeArchived(rawData []string, hasKey bool, form
 
 	value, err := swag.ConvertBool(raw)
 	if err != nil {
-		return errors.InvalidType("includeArchived", "query", "bool", raw)
+		return errors.InvalidType("isArchived", "query", "bool", raw)
 	}
-	o.IncludeArchived = &value
+	o.IsArchived = &value
 
 	return nil
 }

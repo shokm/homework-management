@@ -12,7 +12,6 @@ func GetAuthUser(params auth_api.GetAuthUserParams, principal interface{}) middl
 
 	header := params.HTTPRequest.Header.Get("Authorization")
 
-	// TODO: エラーハンドリング
 	returnValue, err := auth_jwt.ValidateTokenHandler(header)
 	if err != nil {
 		return auth_api.NewGetAuthUserUnauthorized()

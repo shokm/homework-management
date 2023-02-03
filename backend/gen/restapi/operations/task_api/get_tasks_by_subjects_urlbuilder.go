@@ -15,7 +15,7 @@ import (
 
 // GetTasksBySubjectsURL generates an URL for the get tasks by subjects operation
 type GetTasksBySubjectsURL struct {
-	IncludeArchived *bool
+	IsArchived *bool
 
 	_basePath string
 	// avoid unkeyed usage
@@ -51,12 +51,12 @@ func (o *GetTasksBySubjectsURL) Build() (*url.URL, error) {
 
 	qs := make(url.Values)
 
-	var includeArchivedQ string
-	if o.IncludeArchived != nil {
-		includeArchivedQ = swag.FormatBool(*o.IncludeArchived)
+	var isArchivedQ string
+	if o.IsArchived != nil {
+		isArchivedQ = swag.FormatBool(*o.IsArchived)
 	}
-	if includeArchivedQ != "" {
-		qs.Set("includeArchived", includeArchivedQ)
+	if isArchivedQ != "" {
+		qs.Set("isArchived", isArchivedQ)
 	}
 
 	_result.RawQuery = qs.Encode()
