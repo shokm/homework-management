@@ -26,7 +26,7 @@ func init() {
     "title": "homework-management",
     "version": "1.0.0"
   },
-  "host": "example.swagger.io",
+  "host": "localhost:8888",
   "basePath": "/v1",
   "paths": {
     "/auth/login": {
@@ -110,7 +110,7 @@ func init() {
       }
     },
     "/auth/user": {
-      "post": {
+      "get": {
         "security": [
           {
             "bearerAuth": []
@@ -123,7 +123,7 @@ func init() {
           "AuthApi"
         ],
         "summary": "ユーザー情報返却",
-        "operationId": "postAuthUser",
+        "operationId": "getAuthUser",
         "responses": {
           "200": {
             "description": "ユーザー登録成功",
@@ -133,6 +133,337 @@ func init() {
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/subject/{subject_id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "{subject_id}の教科を取得する",
+        "operationId": "getSubjectBySubjectId",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "subject_id",
+            "name": "subject_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/SubjectSingle"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "{subject_id}の教科を更新・作成する",
+        "operationId": "postSubjectBySubjectId",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "subject_id",
+            "name": "subject_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubjectSingle"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/SubjectSingle"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/subjects": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "該当ユーザの全ての有効な教科を取得する",
+        "operationId": "getSubjects",
+        "parameters": [
+          {
+            "type": "boolean",
+            "description": "アーカイブされた教科を含めるか（デフォルトでは含まれない）",
+            "name": "includeArchived",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/SubjectsMultiple"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/subjects/tasks": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "該当ユーザの全ての有効な課題を教科ごとに取得する",
+        "operationId": "getTasksBySubjects",
+        "parameters": [
+          {
+            "type": "boolean",
+            "description": "アーカイブされた教科を含めるか（デフォルトでは含まれない）",
+            "name": "includeArchived",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/ReturnTasksBySubjects"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/task/{task_id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "/{task_id}の課題を取得する",
+        "operationId": "getTaskByTaskId",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "task_id",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/TaskSingle"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "/{task_id}の課題を更新・作成する",
+        "operationId": "postTaskByTaskId",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "task_id",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TaskSingle"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/TaskSingle"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "該当ユーザの全ての有効な課題を取得する",
+        "operationId": "getTasks",
+        "parameters": [
+          {
+            "type": "boolean",
+            "description": "アーカイブされたタスクを含めるか（デフォルトでは含まれない）",
+            "name": "includeArchived",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/TasksMultiple"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -173,6 +504,128 @@ func init() {
         },
         "screen_name": {
           "type": "string"
+        }
+      }
+    },
+    "ReturnTasksBySubject": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string"
+        },
+        "is_archived": {
+          "type": "boolean"
+        },
+        "subject_id": {
+          "type": "number",
+          "format": "int64"
+        },
+        "subject_name": {
+          "type": "string"
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TaskSingle"
+          }
+        },
+        "totalCount": {
+          "type": "number",
+          "format": "int64"
+        }
+      }
+    },
+    "ReturnTasksBySubjects": {
+      "type": "object",
+      "properties": {
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReturnTasksBySubject"
+          }
+        },
+        "totalCount": {
+          "type": "number",
+          "format": "int64"
+        }
+      }
+    },
+    "SubjectSingle": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string"
+        },
+        "is_archived": {
+          "type": "boolean"
+        },
+        "subject_id": {
+          "type": "number",
+          "format": "int64"
+        },
+        "subject_name": {
+          "type": "string"
+        }
+      }
+    },
+    "SubjectsMultiple": {
+      "type": "object",
+      "properties": {
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubjectSingle"
+          }
+        },
+        "totalCount": {
+          "type": "number",
+          "format": "int64"
+        }
+      }
+    },
+    "TaskSingle": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string"
+        },
+        "deadline_at": {
+          "type": "string"
+        },
+        "is_archived": {
+          "type": "boolean"
+        },
+        "subject_id": {
+          "type": "number",
+          "format": "int64"
+        },
+        "subject_name": {
+          "type": "string"
+        },
+        "task_description": {
+          "type": "string"
+        },
+        "task_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "task_name": {
+          "type": "string"
+        }
+      }
+    },
+    "TasksMultiple": {
+      "type": "object",
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TaskSingle"
+          }
+        },
+        "totalCount": {
+          "type": "number",
+          "format": "int64"
         }
       }
     }
@@ -195,7 +648,7 @@ func init() {
     "title": "homework-management",
     "version": "1.0.0"
   },
-  "host": "example.swagger.io",
+  "host": "localhost:8888",
   "basePath": "/v1",
   "paths": {
     "/auth/login": {
@@ -279,7 +732,7 @@ func init() {
       }
     },
     "/auth/user": {
-      "post": {
+      "get": {
         "security": [
           {
             "bearerAuth": []
@@ -292,7 +745,7 @@ func init() {
           "AuthApi"
         ],
         "summary": "ユーザー情報返却",
-        "operationId": "postAuthUser",
+        "operationId": "getAuthUser",
         "responses": {
           "200": {
             "description": "ユーザー登録成功",
@@ -302,6 +755,337 @@ func init() {
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/subject/{subject_id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "{subject_id}の教科を取得する",
+        "operationId": "getSubjectBySubjectId",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "subject_id",
+            "name": "subject_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/SubjectSingle"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "{subject_id}の教科を更新・作成する",
+        "operationId": "postSubjectBySubjectId",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "subject_id",
+            "name": "subject_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubjectSingle"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/SubjectSingle"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/subjects": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "該当ユーザの全ての有効な教科を取得する",
+        "operationId": "getSubjects",
+        "parameters": [
+          {
+            "type": "boolean",
+            "description": "アーカイブされた教科を含めるか（デフォルトでは含まれない）",
+            "name": "includeArchived",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/SubjectsMultiple"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/subjects/tasks": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "該当ユーザの全ての有効な課題を教科ごとに取得する",
+        "operationId": "getTasksBySubjects",
+        "parameters": [
+          {
+            "type": "boolean",
+            "description": "アーカイブされた教科を含めるか（デフォルトでは含まれない）",
+            "name": "includeArchived",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/ReturnTasksBySubjects"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/task/{task_id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "/{task_id}の課題を取得する",
+        "operationId": "getTaskByTaskId",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "task_id",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/TaskSingle"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "/{task_id}の課題を更新・作成する",
+        "operationId": "postTaskByTaskId",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "task_id",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TaskSingle"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/TaskSingle"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "TaskApi"
+        ],
+        "summary": "該当ユーザの全ての有効な課題を取得する",
+        "operationId": "getTasks",
+        "parameters": [
+          {
+            "type": "boolean",
+            "description": "アーカイブされたタスクを含めるか（デフォルトでは含まれない）",
+            "name": "includeArchived",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "$ref": "#/definitions/TasksMultiple"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -342,6 +1126,128 @@ func init() {
         },
         "screen_name": {
           "type": "string"
+        }
+      }
+    },
+    "ReturnTasksBySubject": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string"
+        },
+        "is_archived": {
+          "type": "boolean"
+        },
+        "subject_id": {
+          "type": "number",
+          "format": "int64"
+        },
+        "subject_name": {
+          "type": "string"
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TaskSingle"
+          }
+        },
+        "totalCount": {
+          "type": "number",
+          "format": "int64"
+        }
+      }
+    },
+    "ReturnTasksBySubjects": {
+      "type": "object",
+      "properties": {
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReturnTasksBySubject"
+          }
+        },
+        "totalCount": {
+          "type": "number",
+          "format": "int64"
+        }
+      }
+    },
+    "SubjectSingle": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string"
+        },
+        "is_archived": {
+          "type": "boolean"
+        },
+        "subject_id": {
+          "type": "number",
+          "format": "int64"
+        },
+        "subject_name": {
+          "type": "string"
+        }
+      }
+    },
+    "SubjectsMultiple": {
+      "type": "object",
+      "properties": {
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubjectSingle"
+          }
+        },
+        "totalCount": {
+          "type": "number",
+          "format": "int64"
+        }
+      }
+    },
+    "TaskSingle": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string"
+        },
+        "deadline_at": {
+          "type": "string"
+        },
+        "is_archived": {
+          "type": "boolean"
+        },
+        "subject_id": {
+          "type": "number",
+          "format": "int64"
+        },
+        "subject_name": {
+          "type": "string"
+        },
+        "task_description": {
+          "type": "string"
+        },
+        "task_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "task_name": {
+          "type": "string"
+        }
+      }
+    },
+    "TasksMultiple": {
+      "type": "object",
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TaskSingle"
+          }
+        },
+        "totalCount": {
+          "type": "number",
+          "format": "int64"
         }
       }
     }

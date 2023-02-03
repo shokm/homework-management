@@ -4,7 +4,7 @@
 //
 //  Schemes:
 //    http
-//  Host: example.swagger.io
+//  Host: localhost:8888
 //  BasePath: /v1
 //  Version: 1.0.0
 //

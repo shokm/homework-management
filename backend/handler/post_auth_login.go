@@ -20,7 +20,7 @@ func PostAuthLogin(params auth_api.PostAuthLoginParams) middleware.Responder {
 	// DBからユーザー情報取得
 	userInfo, err := database.LoadUserInfoByScreenName(params.Body.ScreenName)
 	if err != nil {
-		return auth_api.NewPostAuthUserInternalServerError()
+		return auth_api.NewPostAuthLoginInternalServerError()
 	}
 
 	// トークン取得

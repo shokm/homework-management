@@ -74,7 +74,7 @@ export default {
           login: { url: '/v1/auth/login', method: 'post', propertyName: 'token' },
           // logout: { url: '/api/v1/auth/logout', method: 'post' },
           logout: false,
-          user: { url: '/v1/auth/user', method: 'post', propertyName: false }
+          user: { url: '/v1/auth/user', method: 'get', propertyName: false }
         },
         // tokenRequired: true,
         // tokenType: 'bearer'

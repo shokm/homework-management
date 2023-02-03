@@ -20,6 +20,7 @@ import (
 	"github.com/go-openapi/swag"
 
 	"backend/gen/restapi/operations/auth_api"
+	"backend/gen/restapi/operations/task_api"
 )
 
 // NewHomeworkManagementAPI creates a new HomeworkManagement instance
@@ -44,14 +45,35 @@ func NewHomeworkManagementAPI(spec *loads.Document) *HomeworkManagementAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		AuthAPIGetAuthUserHandler: auth_api.GetAuthUserHandlerFunc(func(params auth_api.GetAuthUserParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation auth_api.GetAuthUser has not yet been implemented")
+		}),
+		TaskAPIGetSubjectBySubjectIDHandler: task_api.GetSubjectBySubjectIDHandlerFunc(func(params task_api.GetSubjectBySubjectIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.GetSubjectBySubjectID has not yet been implemented")
+		}),
+		TaskAPIGetSubjectsHandler: task_api.GetSubjectsHandlerFunc(func(params task_api.GetSubjectsParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.GetSubjects has not yet been implemented")
+		}),
+		TaskAPIGetTaskByTaskIDHandler: task_api.GetTaskByTaskIDHandlerFunc(func(params task_api.GetTaskByTaskIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.GetTaskByTaskID has not yet been implemented")
+		}),
+		TaskAPIGetTasksHandler: task_api.GetTasksHandlerFunc(func(params task_api.GetTasksParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.GetTasks has not yet been implemented")
+		}),
+		TaskAPIGetTasksBySubjectsHandler: task_api.GetTasksBySubjectsHandlerFunc(func(params task_api.GetTasksBySubjectsParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.GetTasksBySubjects has not yet been implemented")
+		}),
 		AuthAPIPostAuthLoginHandler: auth_api.PostAuthLoginHandlerFunc(func(params auth_api.PostAuthLoginParams) middleware.Responder {
 			return middleware.NotImplemented("operation auth_api.PostAuthLogin has not yet been implemented")
 		}),
 		AuthAPIPostAuthRegisterHandler: auth_api.PostAuthRegisterHandlerFunc(func(params auth_api.PostAuthRegisterParams) middleware.Responder {
 			return middleware.NotImplemented("operation auth_api.PostAuthRegister has not yet been implemented")
 		}),
-		AuthAPIPostAuthUserHandler: auth_api.PostAuthUserHandlerFunc(func(params auth_api.PostAuthUserParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation auth_api.PostAuthUser has not yet been implemented")
+		TaskAPIPostSubjectBySubjectIDHandler: task_api.PostSubjectBySubjectIDHandlerFunc(func(params task_api.PostSubjectBySubjectIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.PostSubjectBySubjectID has not yet been implemented")
+		}),
+		TaskAPIPostTaskByTaskIDHandler: task_api.PostTaskByTaskIDHandlerFunc(func(params task_api.PostTaskByTaskIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.PostTaskByTaskID has not yet been implemented")
 		}),
 
 		// Applies when the "Authorization" header is set
@@ -103,12 +125,26 @@ type HomeworkManagementAPI struct {
 	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
 	APIAuthorizer runtime.Authorizer
 
+	// AuthAPIGetAuthUserHandler sets the operation handler for the get auth user operation
+	AuthAPIGetAuthUserHandler auth_api.GetAuthUserHandler
+	// TaskAPIGetSubjectBySubjectIDHandler sets the operation handler for the get subject by subject Id operation
+	TaskAPIGetSubjectBySubjectIDHandler task_api.GetSubjectBySubjectIDHandler
+	// TaskAPIGetSubjectsHandler sets the operation handler for the get subjects operation
+	TaskAPIGetSubjectsHandler task_api.GetSubjectsHandler
+	// TaskAPIGetTaskByTaskIDHandler sets the operation handler for the get task by task Id operation
+	TaskAPIGetTaskByTaskIDHandler task_api.GetTaskByTaskIDHandler
+	// TaskAPIGetTasksHandler sets the operation handler for the get tasks operation
+	TaskAPIGetTasksHandler task_api.GetTasksHandler
+	// TaskAPIGetTasksBySubjectsHandler sets the operation handler for the get tasks by subjects operation
+	TaskAPIGetTasksBySubjectsHandler task_api.GetTasksBySubjectsHandler
 	// AuthAPIPostAuthLoginHandler sets the operation handler for the post auth login operation
 	AuthAPIPostAuthLoginHandler auth_api.PostAuthLoginHandler
 	// AuthAPIPostAuthRegisterHandler sets the operation handler for the post auth register operation
 	AuthAPIPostAuthRegisterHandler auth_api.PostAuthRegisterHandler
-	// AuthAPIPostAuthUserHandler sets the operation handler for the post auth user operation
-	AuthAPIPostAuthUserHandler auth_api.PostAuthUserHandler
+	// TaskAPIPostSubjectBySubjectIDHandler sets the operation handler for the post subject by subject Id operation
+	TaskAPIPostSubjectBySubjectIDHandler task_api.PostSubjectBySubjectIDHandler
+	// TaskAPIPostTaskByTaskIDHandler sets the operation handler for the post task by task Id operation
+	TaskAPIPostTaskByTaskIDHandler task_api.PostTaskByTaskIDHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -190,14 +226,35 @@ func (o *HomeworkManagementAPI) Validate() error {
 		unregistered = append(unregistered, "AuthorizationAuth")
 	}
 
+	if o.AuthAPIGetAuthUserHandler == nil {
+		unregistered = append(unregistered, "auth_api.GetAuthUserHandler")
+	}
+	if o.TaskAPIGetSubjectBySubjectIDHandler == nil {
+		unregistered = append(unregistered, "task_api.GetSubjectBySubjectIDHandler")
+	}
+	if o.TaskAPIGetSubjectsHandler == nil {
+		unregistered = append(unregistered, "task_api.GetSubjectsHandler")
+	}
+	if o.TaskAPIGetTaskByTaskIDHandler == nil {
+		unregistered = append(unregistered, "task_api.GetTaskByTaskIDHandler")
+	}
+	if o.TaskAPIGetTasksHandler == nil {
+		unregistered = append(unregistered, "task_api.GetTasksHandler")
+	}
+	if o.TaskAPIGetTasksBySubjectsHandler == nil {
+		unregistered = append(unregistered, "task_api.GetTasksBySubjectsHandler")
+	}
 	if o.AuthAPIPostAuthLoginHandler == nil {
 		unregistered = append(unregistered, "auth_api.PostAuthLoginHandler")
 	}
 	if o.AuthAPIPostAuthRegisterHandler == nil {
 		unregistered = append(unregistered, "auth_api.PostAuthRegisterHandler")
 	}
-	if o.AuthAPIPostAuthUserHandler == nil {
-		unregistered = append(unregistered, "auth_api.PostAuthUserHandler")
+	if o.TaskAPIPostSubjectBySubjectIDHandler == nil {
+		unregistered = append(unregistered, "task_api.PostSubjectBySubjectIDHandler")
+	}
+	if o.TaskAPIPostTaskByTaskIDHandler == nil {
+		unregistered = append(unregistered, "task_api.PostTaskByTaskIDHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -296,6 +353,30 @@ func (o *HomeworkManagementAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/auth/user"] = auth_api.NewGetAuthUser(o.context, o.AuthAPIGetAuthUserHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/subject/{subject_id}"] = task_api.NewGetSubjectBySubjectID(o.context, o.TaskAPIGetSubjectBySubjectIDHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/subjects"] = task_api.NewGetSubjects(o.context, o.TaskAPIGetSubjectsHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/task/{task_id}"] = task_api.NewGetTaskByTaskID(o.context, o.TaskAPIGetTaskByTaskIDHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/tasks"] = task_api.NewGetTasks(o.context, o.TaskAPIGetTasksHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/subjects/tasks"] = task_api.NewGetTasksBySubjects(o.context, o.TaskAPIGetTasksBySubjectsHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
@@ -307,7 +388,11 @@ func (o *HomeworkManagementAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/auth/user"] = auth_api.NewPostAuthUser(o.context, o.AuthAPIPostAuthUserHandler)
+	o.handlers["POST"]["/subject/{subject_id}"] = task_api.NewPostSubjectBySubjectID(o.context, o.TaskAPIPostSubjectBySubjectIDHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/task/{task_id}"] = task_api.NewPostTaskByTaskID(o.context, o.TaskAPIPostTaskByTaskIDHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

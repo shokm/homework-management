@@ -2,7 +2,7 @@ swagger: "2.0"
 info: # infoオブジェクト
   title: "homework-management"
   version: "1.0.0"
-host: "example.swagger.io"
+host: "localhost:8888"
 basePath: "/v1"
 schemes:
 - "http"
@@ -68,21 +68,15 @@ paths: # pathsオブジェクト
         503:
           description: "Service Unavailable"
   /auth/user:
-    post:
+    get:
       security:
       - bearerAuth: []
       tags:
       - "AuthApi"
       summary: "ユーザー情報返却"
-      operationId: "postAuthUser"
+      operationId: "getAuthUser"
       produces:
       - "application/json"
-      #parameters:
-      #- name: Authorization
-      #  in: header
-      #  description: JWT access token
-      #  required: true
-      #  type: string
       responses: # responsesオブジェクト
         200:
           description: "ユーザー登録成功"
@@ -95,6 +89,224 @@ paths: # pathsオブジェクト
           description: "Internal Server Error"
         503:
           description: "Service Unavailable"
+  /subjects/tasks:
+    get: # getメソッドのoperationオブジェクト
+      security:
+      - bearerAuth: []
+      tags:
+      - "TaskApi"
+      summary: "該当ユーザの全ての有効な課題を教科ごとに取得する"
+      operationId: "getTasksBySubjects"
+      produces:
+      - "application/json"
+      parameters: # parameterオブジェクトの配列
+      - name: "includeArchived"
+        in: "query"
+        description: "アーカイブされた教科を含めるか（デフォルトでは含まれない）"
+        type: "boolean"
+      responses: # responsesオブジェクト
+        200:
+          description: "成功"
+          schema: # schemaオブジェクト
+            $ref: "#/definitions/ReturnTasksBySubjects"
+            # definitionsに定義されたオブジェクトを参照
+        401:
+          description: "Unauthorized"
+        404:
+          description: "Not Found"
+        500:
+          description: "Internal Server Error"
+        503:
+          description: "Service Unavailable"
+  /subjects:
+    get: # getメソッドのoperationオブジェクト
+      security:
+      - bearerAuth: []
+      tags:
+      - "TaskApi"
+      summary: "該当ユーザの全ての有効な教科を取得する"
+      operationId: "getSubjects"
+      produces:
+      - "application/json"
+      parameters: # parameterオブジェクトの配列
+      - name: "includeArchived"
+        in: "query"
+        description: "アーカイブされた教科を含めるか（デフォルトでは含まれない）"
+        type: "boolean"
+      responses: # responsesオブジェクト
+        200:
+          description: "成功"
+          schema: # schemaオブジェクト
+            $ref: "#/definitions/SubjectsMultiple"
+            # definitionsに定義されたオブジェクトを参照
+        401:
+          description: "Unauthorized"
+        404:
+          description: "Not Found"
+        500:
+          description: "Internal Server Error"
+        503:
+          description: "Service Unavailable"
+  /subject/{subject_id}:
+    get: # getメソッドのoperationオブジェクト
+      security:
+      - bearerAuth: []
+      tags:
+      - "TaskApi"
+      summary: "{subject_id}の教科を取得する"
+      operationId: "getSubjectBySubjectId"
+      produces:
+      - "application/json"
+      parameters: # parameterオブジェクトの配列
+      - name: "subject_id"
+        in: "path"
+        required: true
+        description: "subject_id"
+        type: "string"
+      responses: # responsesオブジェクト
+        200:
+          description: "成功"
+          schema: # schemaオブジェクト
+            $ref: "#/definitions/SubjectSingle"
+            # definitionsに定義されたオブジェクトを参照
+        401:
+          description: "Unauthorized"
+        404:
+          description: "Not Found"
+        500:
+          description: "Internal Server Error"
+        503:
+          description: "Service Unavailable"
+    post: # putメソッドのoperationオブジェクト
+      security:
+      - bearerAuth: []
+      tags:
+      - "TaskApi"
+      summary: "{subject_id}の教科を更新・作成する"
+      operationId: "postSubjectBySubjectId"
+      produces:
+      - "application/json"
+      parameters: # parameterオブジェクトの配列
+      - name: "subject_id"
+        in: "path"
+        description: "subject_id"
+        required: true
+        type: "number"
+      - in: "body"
+        name: "body"
+        required: true
+        schema: # schemaオブジェクト
+          $ref: "#/definitions/SubjectSingle"
+          # definitionsに定義されたオベジェクの参考
+      responses: # responsesオブジェクト
+        200:
+          description: "成功"
+          schema: # schemaオブジェクト
+            $ref: "#/definitions/SubjectSingle"
+            # definitionsに定義されたオブジェクトを参照
+        401:
+          description: "Unauthorized"
+        404:
+          description: "Not Found"
+        500:
+          description: "Internal Server Error"
+        503:
+          description: "Service Unavailable"
+  /tasks:
+    get: # getメソッドのoperationオブジェクト
+      security:
+      - bearerAuth: []
+      tags:
+      - "TaskApi"
+      summary: "該当ユーザの全ての有効な課題を取得する"
+      operationId: "getTasks"
+      produces:
+      - "application/json"
+      parameters: # parameterオブジェクトの配列
+      - name: "includeArchived"
+        in: "query"
+        description: "アーカイブされたタスクを含めるか（デフォルトでは含まれない）"
+        type: "boolean"
+      responses: # responsesオブジェクト
+        200:
+          description: "成功"
+          schema: # schemaオブジェクト
+            $ref: "#/definitions/TasksMultiple"
+            # definitionsに定義されたオブジェクトを参照
+        401:
+          description: "Unauthorized"
+        404:
+          description: "Not Found"
+        500:
+          description: "Internal Server Error"
+        503:
+          description: "Service Unavailable"
+  /task/{task_id}:
+    get: # getメソッドのoperationオブジェクト
+      security:
+      - bearerAuth: []
+      tags:
+      - "TaskApi"
+      summary: "/{task_id}の課題を取得する"
+      operationId: "getTaskByTaskId"
+      produces:
+      - "application/json"
+      parameters: # parameterオブジェクトの配列
+      - name: "task_id"
+        in: "path"
+        required: true
+        description: "task_id"
+        type: "string"
+      responses: # responsesオブジェクト
+        200:
+          description: "成功"
+          schema: # schemaオブジェクト
+            $ref: "#/definitions/TaskSingle"
+            # definitionsに定義されたオブジェクトを参照
+        401:
+          description: "Unauthorized"
+        404:
+          description: "Not Found"
+        500:
+          description: "Internal Server Error"
+        503:
+          description: "Service Unavailable"
+    post: # putメソッドのoperationオブジェクト
+      security:
+      - bearerAuth: []
+      tags:
+      - "TaskApi"
+      summary: "/{task_id}の課題を更新・作成する"
+      operationId: "postTaskByTaskId"
+      produces:
+      - "application/json"
+      parameters: # parameterオブジェクトの配列
+      - name: "task_id"
+        in: "path"
+        description: "task_id"
+        required: true
+        type: "number"
+      - in: "body"
+        name: "body"
+        required: true
+        schema: # schemaオブジェクト
+          $ref: "#/definitions/TaskSingle"
+          # definitionsに定義されたオベジェクの参考
+      responses: # responsesオブジェクト
+        200:
+          description: "成功"
+          schema: # schemaオブジェクト
+            $ref: "#/definitions/TaskSingle"
+            # definitionsに定義されたオブジェクトを参照
+        401:
+          description: "Unauthorized"
+        404:
+          description: "Not Found"
+        500:
+          description: "Internal Server Error"
+        503:
+          description: "Service Unavailable"
+
 definitions: # definitionsオブジェクト
   AuthUserReq: # schemaオブジェクト
     type: "object"
@@ -115,4 +327,86 @@ definitions: # definitionsオブジェクト
         type: "number"
         format: "int64"
       screen_name:
+        type: "string"
+  ReturnTasksBySubjects: # schemaオブジェクト
+    type: "object"
+    properties:
+      totalCount:
+        type: "number"
+        format: "int64"
+      subjects: # schemaオブジェクト
+        type: "array"
+        items:
+          $ref: "#/definitions/ReturnTasksBySubject" # ReturnTasksSingleを呼び出す
+  ReturnTasksBySubject: # schemaオブジェクト
+    type: "object"
+    properties:
+      totalCount:
+        type: "number"
+        format: "int64"
+      subject_id: # schemaオブジェクト
+        type: "number"
+        format: "int64"
+      subject_name: # schemaオブジェクト
+        type: "string"
+      created_at:
+        type: "string"
+      is_archived:
+        type: "boolean"
+      tasks: # schemaオブジェクト
+        type: "array"
+        items:
+          $ref: "#/definitions/TaskSingle" # ReturnTasksSingleを呼び出す
+  SubjectsMultiple: # schemaオブジェクト
+    type: "object"
+    properties:
+      totalCount:
+        type: "number"
+        format: "int64"
+      subjects: # schemaオブジェクト
+        type: "array"
+        items:
+          $ref: "#/definitions/SubjectSingle" # ReturnTasksSingleを呼び出す
+  SubjectSingle: # schemaオブジェクト
+    type: "object"
+    properties:
+      subject_id: # schemaオブジェクト
+        type: "number"
+        format: "int64"
+      subject_name: # schemaオブジェクト
+        type: "string"
+      created_at:
+        type: "string"
+      is_archived:
+        type: "boolean"
+  TasksMultiple: # schemaオブジェクト
+    type: "object"
+    properties:
+      totalCount:
+        type: "number"
+        format: "int64"
+      tasks: # schemaオブジェクト
+        type: "array"
+        items:
+          $ref: "#/definitions/TaskSingle" # ReturnTasksSingleを呼び出す
+  TaskSingle: # schemaオブジェクト
+    type: "object"
+    properties:
+      task_id: # schemaオブジェクト
+        type: "integer"
+        format: "int64"
+      task_name: # schemaオブジェクト
+        type: "string"
+      task_description: # schemaオブジェクト
+        type: "string"
+      deadline_at:
+        type: "string"
+      created_at:
+        type: "string"
+      is_archived:
+        type: "boolean"
+      subject_id: # schemaオブジェクト
+        type: "number"
+        format: "int64"
+      subject_name: # schemaオブジェクト
         type: "string"

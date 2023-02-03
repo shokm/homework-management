@@ -8,17 +8,17 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
-func PostAuthUser(params auth_api.PostAuthUserParams, principal interface{}) middleware.Responder {
+func GetAuthUser(params auth_api.GetAuthUserParams, principal interface{}) middleware.Responder {
 
 	header := params.HTTPRequest.Header.Get("Authorization")
 
 	// TODO: エラーハンドリング
 	returnValue, err := auth_jwt.ValidateTokenHandler(header)
 	if err != nil {
-		return auth_api.NewPostAuthUserUnauthorized()
+		return auth_api.NewGetAuthUserUnauthorized()
 	}
 
 	userInfo := returnValue.(models.AuthReturnUser)
 
-	return auth_api.NewPostAuthUserOK().WithPayload(&userInfo)
+	return auth_api.NewGetAuthUserOK().WithPayload(&userInfo)
 }

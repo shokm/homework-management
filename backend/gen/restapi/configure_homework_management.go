@@ -80,7 +80,7 @@ func configureAPI(api *operations.HomeworkManagementAPI) http.Handler {
 		})
 	}
 	*/
-	api.AuthAPIPostAuthUserHandler = auth_api.PostAuthUserHandlerFunc(handler.PostAuthUser)
+	api.AuthAPIGetAuthUserHandler = auth_api.GetAuthUserHandlerFunc(handler.GetAuthUser)
 
 	api.PreServerShutdown = func() {}
 

@@ -11,40 +11,40 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
-// PostAuthUserHandlerFunc turns a function with the right signature into a post auth user handler
-type PostAuthUserHandlerFunc func(PostAuthUserParams, interface{}) middleware.Responder
+// GetAuthUserHandlerFunc turns a function with the right signature into a get auth user handler
+type GetAuthUserHandlerFunc func(GetAuthUserParams, interface{}) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn PostAuthUserHandlerFunc) Handle(params PostAuthUserParams, principal interface{}) middleware.Responder {
+func (fn GetAuthUserHandlerFunc) Handle(params GetAuthUserParams, principal interface{}) middleware.Responder {
 	return fn(params, principal)
 }
 
-// PostAuthUserHandler interface for that can handle valid post auth user params
-type PostAuthUserHandler interface {
-	Handle(PostAuthUserParams, interface{}) middleware.Responder
+// GetAuthUserHandler interface for that can handle valid get auth user params
+type GetAuthUserHandler interface {
+	Handle(GetAuthUserParams, interface{}) middleware.Responder
 }
 
-// NewPostAuthUser creates a new http.Handler for the post auth user operation
-func NewPostAuthUser(ctx *middleware.Context, handler PostAuthUserHandler) *PostAuthUser {
-	return &PostAuthUser{Context: ctx, Handler: handler}
+// NewGetAuthUser creates a new http.Handler for the get auth user operation
+func NewGetAuthUser(ctx *middleware.Context, handler GetAuthUserHandler) *GetAuthUser {
+	return &GetAuthUser{Context: ctx, Handler: handler}
 }
 
-/* PostAuthUser swagger:route POST /auth/user AuthApi postAuthUser
+/* GetAuthUser swagger:route GET /auth/user AuthApi getAuthUser
 
 ユーザー情報返却
 
 */
-type PostAuthUser struct {
+type GetAuthUser struct {
 	Context *middleware.Context
-	Handler PostAuthUserHandler
+	Handler GetAuthUserHandler
 }
 
-func (o *PostAuthUser) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+func (o *GetAuthUser) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx
 	}
-	var Params = NewPostAuthUserParams()
+	var Params = NewGetAuthUserParams()
 	uprinc, aCtx, err := o.Context.Authorize(r, route)
 	if err != nil {
 		o.Context.Respond(rw, r, route.Produces, route, err)
