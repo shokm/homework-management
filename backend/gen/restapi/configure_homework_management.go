@@ -11,6 +11,7 @@ import (
 
 	"backend/gen/restapi/operations"
 	"backend/gen/restapi/operations/auth_api"
+	"backend/gen/restapi/operations/task_api"
 	"backend/handler"
 	"backend/handler/auth_jwt"
 )
@@ -74,13 +75,76 @@ func configureAPI(api *operations.HomeworkManagementAPI) http.Handler {
 	api.AuthAPIPostAuthRegisterHandler = auth_api.PostAuthRegisterHandlerFunc(handler.PostAuthRegister)
 
 	/*
-	if api.AuthAPIPostAuthUserHandler == nil {
-		api.AuthAPIPostAuthUserHandler = auth_api.PostAuthUserHandlerFunc(func(params auth_api.PostAuthUserParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation auth_api.PostAuthUser has not yet been implemented")
+	if api.AuthAPIGetAuthUserHandler == nil {
+		api.AuthAPIGetAuthUserHandler = auth_api.GetAuthUserHandlerFunc(func(params auth_api.GetAuthUserParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation auth_api.GetAuthUser has not yet been implemented")
 		})
 	}
 	*/
 	api.AuthAPIGetAuthUserHandler = auth_api.GetAuthUserHandlerFunc(handler.GetAuthUser)
+
+	/*
+	if api.TaskAPIGetSubjectBySubjectIDHandler == nil {
+		api.TaskAPIGetSubjectBySubjectIDHandler = task_api.GetSubjectBySubjectIDHandlerFunc(func(params task_api.GetSubjectBySubjectIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.GetSubjectBySubjectID has not yet been implemented")
+		})
+	}
+	*/
+	api.TaskAPIGetSubjectBySubjectIDHandler = task_api.GetSubjectBySubjectIDHandlerFunc(handler.GetSubjectBySubjectID)
+
+	/*
+	if api.TaskAPIGetSubjectsHandler == nil {
+		api.TaskAPIGetSubjectsHandler = task_api.GetSubjectsHandlerFunc(func(params task_api.GetSubjectsParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.GetSubjects has not yet been implemented")
+		})
+	}
+	*/
+	api.TaskAPIGetSubjectsHandler = task_api.GetSubjectsHandlerFunc(handler.GetSubjects)
+
+	/*
+	if api.TaskAPIGetTaskByTaskIDHandler == nil {
+		api.TaskAPIGetTaskByTaskIDHandler = task_api.GetTaskByTaskIDHandlerFunc(func(params task_api.GetTaskByTaskIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.GetTaskByTaskID has not yet been implemented")
+		})
+	}
+	*/
+	api.TaskAPIGetTaskByTaskIDHandler = task_api.GetTaskByTaskIDHandlerFunc(handler.GetTaskByTaskID)
+
+	/*
+	if api.TaskAPIGetTasksHandler == nil {
+		api.TaskAPIGetTasksHandler = task_api.GetTasksHandlerFunc(func(params task_api.GetTasksParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.GetTasks has not yet been implemented")
+		})
+	}
+	*/
+	api.TaskAPIGetTasksHandler = task_api.GetTasksHandlerFunc(handler.GetTasks)
+
+	/*
+	if api.TaskAPIGetTasksBySubjectsHandler == nil {
+		api.TaskAPIGetTasksBySubjectsHandler = task_api.GetTasksBySubjectsHandlerFunc(func(params task_api.GetTasksBySubjectsParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.GetTasksBySubjects has not yet been implemented")
+		})
+	}
+	*/
+	api.TaskAPIGetTasksBySubjectsHandler = task_api.GetTasksBySubjectsHandlerFunc(handler.GetTasksBySubjects)
+
+	/*
+	if api.TaskAPIPostSubjectBySubjectIDHandler == nil {
+		api.TaskAPIPostSubjectBySubjectIDHandler = task_api.PostSubjectBySubjectIDHandlerFunc(func(params task_api.PostSubjectBySubjectIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.PostSubjectBySubjectID has not yet been implemented")
+		})
+	}
+	*/
+	api.TaskAPIPostSubjectBySubjectIDHandler = task_api.PostSubjectBySubjectIDHandlerFunc(handler.PostSubjectBySubjectID)
+
+	/*
+	if api.TaskAPIPostTaskByTaskIDHandler == nil {
+		api.TaskAPIPostTaskByTaskIDHandler = task_api.PostTaskByTaskIDHandlerFunc(func(params task_api.PostTaskByTaskIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation task_api.PostTaskByTaskID has not yet been implemented")
+		})
+	}
+	*/
+	api.TaskAPIPostTaskByTaskIDHandler = task_api.PostTaskByTaskIDHandlerFunc(handler.PostTaskByTaskID)
 
 	api.PreServerShutdown = func() {}
 
