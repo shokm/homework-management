@@ -41,7 +41,16 @@ func GetTasksByUserID(userID int64, isArchived bool) ([]TaskApiResultList, error
 	}
 
 	// SELECT文
-	db.Model(&TaskLists{}).Where("task_lists.user_id = ? AND task_lists.is_archived = ?", userID, isArchived).Joins("left join subject_lists on task_lists.subject_id = subject_lists.subject_id").Find(&resultLists)
+	// db.Model(&TaskLists{}).Where("task_lists.user_id = ? AND task_lists.is_archived = ?", userID, isArchived).Joins("left join subject_lists on task_lists.subject_id = subject_lists.subject_id").Find(&resultLists)
+	// TODO: db.Debug()
+	db.Debug().Model(&TaskLists{}).Select("subject_lists.subject_name, task_lists.task_id, task_lists.user_id, task_lists.subject_id, task_lists.state_id, task_lists.task_name, task_lists.task_description, task_lists.is_archived, task_lists.deadline_at, task_lists.created_at, task_lists.updated_at").Where("task_lists.user_id = ? AND task_lists.is_archived = ?", userID, isArchived).Joins("left join subject_lists on task_lists.subject_id = subject_lists.subject_id").Order("task_lists.task_id asc").Scan(&resultLists)
+
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return resultLists, errors.New(err.Error())
+	}
+	sqlDB.Close()
 
 	return resultLists, nil
 }
@@ -63,7 +72,16 @@ func GetTaskByTaskID(userID int64, taskID int64) (TaskApiResultList, error){
 	}
 
 	// SELECT文
-	db.Model(&TaskLists{}).Where("task_lists.user_id = ? AND task_lists.task_id = ?", userID, taskID).Joins("left join subject_lists on task_lists.subject_id = subject_lists.subject_id").First(&resultList)
+	// db.Model(&TaskLists{}).Where("task_lists.user_id = ? AND task_lists.task_id = ?", userID, taskID).Joins("left join subject_lists on task_lists.subject_id = subject_lists.subject_id").First(&resultList)
+	// TODO: db.Debug()
+	db.Debug().Model(&TaskLists{}).Where("task_lists.user_id = ? AND task_lists.task_id = ?", userID, taskID).Joins("left join subject_lists on task_lists.subject_id = subject_lists.subject_id").First(&resultList)
+
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return resultList, errors.New(err.Error())
+	}
+	sqlDB.Close()
 
 	return resultList, nil
 }
@@ -88,6 +106,13 @@ func GetCountTaskByTaskID(userID int64, taskID int64) (int64, error){
 	// TODO: db.Debug()
 	db.Debug().Model(&TaskLists{}).Where("task_id = ? AND user_id = ?", taskID, userID).Count(&count)
 
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return count, errors.New(err.Error())
+	}
+	sqlDB.Close()
+
 	return count, nil
 }
 
@@ -106,6 +131,13 @@ func PostTaskByTaskID(postTaskLists TaskLists) (int64, error){
 	// db.Create(postTaskLists)
 	// TODO: db.Debug()
 	db.Debug().Create(&postTaskLists)
+
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return 0, errors.New(err.Error())
+	}
+	sqlDB.Close()
 
 	return int64(postTaskLists.TaskID), nil
 }
@@ -134,6 +166,13 @@ func PutTaskByTaskID(postTaskLists TaskLists, userID int64, taskID int64) (TaskA
 	// Setect
 	db.Model(&TaskLists{}).Where("task_lists.user_id = ? AND task_lists.task_id = ?", userID, taskID).Joins("left join subject_lists on task_lists.subject_id = subject_lists.subject_id").First(&resultList)
 
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return resultList, errors.New(err.Error())
+	}
+	sqlDB.Close()
+
 	return resultList, nil
 }
 
@@ -154,7 +193,14 @@ func GetSubjectsByUserID(userID int64, isArchived bool) ([]models.SubjectSingle,
 	}
 
 	// SELECT文
-	db.Model(&SubjectLists{}).Where("user_id = ? AND is_archived = ?", userID, isArchived).Find(&resultLists)
+	db.Model(&SubjectLists{}).Where("user_id = ? AND is_archived = ?", userID, isArchived).Order("subject_id asc").Find(&resultLists)
+
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return resultLists, errors.New(err.Error())
+	}
+	sqlDB.Close()
 
 	return resultLists, nil
 }
@@ -177,6 +223,13 @@ func GetSubjectBySubjectID(userID int64, SubjectID int64) (SubjectLists, error){
 
 	// SELECT文
 	db.Model(&SubjectLists{}).Where("user_id = ? AND subject_id = ?", userID, SubjectID).First(&resultList)
+
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return resultList, errors.New(err.Error())
+	}
+	sqlDB.Close()
 
 	return resultList, nil
 }
@@ -201,6 +254,13 @@ func GetCountSubjectBySubjectID(userID int64, SubjectID int64) (int64, error){
 	// TODO: db.Debug()
 	db.Debug().Model(&SubjectLists{}).Where("subject_id = ? AND user_id = ?", SubjectID, userID).Count(&count)
 
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return count, errors.New(err.Error())
+	}
+	sqlDB.Close()
+
 	return count, nil
 }
 
@@ -219,6 +279,13 @@ func PostSubjectBySubjectID(postTaskLists SubjectLists) (int64, error){
 	// db.Create(postTaskLists)
 	// TODO: db.Debug()
 	db.Debug().Create(&postTaskLists)
+
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return 0, errors.New(err.Error())
+	}
+	sqlDB.Close()
 
 	return int64(postTaskLists.SubjectID), nil
 }
@@ -246,6 +313,13 @@ func PutSubjectBySubjectID(postSubjectLists SubjectLists, userID int64, SubjectI
 
 	// SELECT文
 	db.Model(&SubjectLists{}).Where("user_id = ? AND subject_id = ?", userID, SubjectID).First(&resultList)
+
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return resultList, errors.New(err.Error())
+	}
+	sqlDB.Close()
 
 	return resultList, nil
 }

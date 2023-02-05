@@ -156,5 +156,12 @@ func LoadUserInfoByScreenName(screenName string) (UserLists, error){
 
 	db.Model(&UserLists{}).Where("screen_name = ?", screenName).First(&userInfo)
 
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return userInfo, errors.New(err.Error())
+	}
+	sqlDB.Close()
+
 	return userInfo, nil
 }
