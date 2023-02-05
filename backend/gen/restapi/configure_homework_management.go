@@ -6,6 +6,8 @@ import (
 	"crypto/tls"
 	"net/http"
 
+	"github.com/rs/cors"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 
@@ -174,5 +176,21 @@ func setupMiddlewares(handler http.Handler) http.Handler {
 // The middleware configuration happens before anything, this middleware also applies to serving the swagger.json document.
 // So this is a good place to plug in a panic handling middleware, logging and metrics.
 func setupGlobalMiddleware(handler http.Handler) http.Handler {
+	/*
 	return handler
+	*/
+
+	// TODO: CORSの設定をする
+	/*
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000", "http://foo.com"},
+		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodDelete, http.MethodOptions},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: true,
+	})
+	/**/
+
+	handleCORS := cors.Default().Handler
+
+    return handleCORS(handler)
 }
