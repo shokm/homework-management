@@ -47,7 +47,6 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     '@nuxtjs/auth-next',
-    '@nuxtjs/proxy',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -79,13 +78,6 @@ export default {
         // tokenRequired: true,
         // tokenType: 'bearer'
       }
-    }
-  },
-
-  proxy: {
-    '/api/': {
-      target: 'http://localhost:8888',
-      pathRewrite: {'^/api': '/'},
     }
   },
 
