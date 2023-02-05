@@ -162,7 +162,8 @@ paths: # pathsオブジェクト
         in: "path"
         required: true
         description: "subject_id"
-        type: "string"
+        type: "integer"
+        format: "int64"
       responses: # responsesオブジェクト
         200:
           description: "成功"
@@ -256,7 +257,8 @@ paths: # pathsオブジェクト
         in: "path"
         required: true
         description: "task_id"
-        type: "string"
+        type: "integer"
+        format: "int64"
       responses: # responsesオブジェクト
         200:
           description: "成功"
@@ -324,7 +326,7 @@ definitions: # definitionsオブジェクト
     type: "object"
     properties:
       user_id: # schemaオブジェクト
-        type: "number"
+        type: "integer"
         format: "int64"
       screen_name:
         type: "string"
@@ -332,7 +334,7 @@ definitions: # definitionsオブジェクト
     type: "object"
     properties:
       totalCount:
-        type: "number"
+        type: "integer"
         format: "int64"
       subjects: # schemaオブジェクト
         type: "array"
@@ -342,10 +344,10 @@ definitions: # definitionsオブジェクト
     type: "object"
     properties:
       totalCount:
-        type: "number"
+        type: "integer"
         format: "int64"
       subject_id: # schemaオブジェクト
-        type: "number"
+        type: "integer"
         format: "int64"
       subject_name: # schemaオブジェクト
         type: "string"
@@ -361,7 +363,7 @@ definitions: # definitionsオブジェクト
     type: "object"
     properties:
       totalCount:
-        type: "number"
+        type: "integer"
         format: "int64"
       subjects: # schemaオブジェクト
         type: "array"
@@ -371,7 +373,7 @@ definitions: # definitionsオブジェクト
     type: "object"
     properties:
       subject_id: # schemaオブジェクト
-        type: "number"
+        type: "integer"
         format: "int64"
       subject_name: # schemaオブジェクト
         type: "string"
@@ -383,7 +385,7 @@ definitions: # definitionsオブジェクト
     type: "object"
     properties:
       totalCount:
-        type: "number"
+        type: "integer"
         format: "int64"
       tasks: # schemaオブジェクト
         type: "array"
@@ -406,7 +408,10 @@ definitions: # definitionsオブジェクト
       is_archived:
         type: "boolean"
       subject_id: # schemaオブジェクト
-        type: "number"
+        type: "integer"
         format: "int64"
       subject_name: # schemaオブジェクト
         type: "string"
+      state_id:
+        type: "integer"
+        format: "int64"

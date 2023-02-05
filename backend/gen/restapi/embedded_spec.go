@@ -160,7 +160,8 @@ func init() {
         "operationId": "getSubjectBySubjectId",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "description": "subject_id",
             "name": "subject_id",
             "in": "path",
@@ -348,7 +349,8 @@ func init() {
         "operationId": "getTaskByTaskId",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "description": "task_id",
             "name": "task_id",
             "in": "path",
@@ -491,7 +493,7 @@ func init() {
           "type": "string"
         },
         "user_id": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         }
       }
@@ -517,7 +519,7 @@ func init() {
           "type": "boolean"
         },
         "subject_id": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         },
         "subject_name": {
@@ -530,7 +532,7 @@ func init() {
           }
         },
         "totalCount": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         }
       }
@@ -545,7 +547,7 @@ func init() {
           }
         },
         "totalCount": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         }
       }
@@ -560,7 +562,7 @@ func init() {
           "type": "boolean"
         },
         "subject_id": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         },
         "subject_name": {
@@ -578,7 +580,7 @@ func init() {
           }
         },
         "totalCount": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         }
       }
@@ -595,8 +597,12 @@ func init() {
         "is_archived": {
           "type": "boolean"
         },
+        "state_id": {
+          "type": "integer",
+          "format": "int64"
+        },
         "subject_id": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         },
         "subject_name": {
@@ -624,7 +630,7 @@ func init() {
           }
         },
         "totalCount": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         }
       }
@@ -782,7 +788,8 @@ func init() {
         "operationId": "getSubjectBySubjectId",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "description": "subject_id",
             "name": "subject_id",
             "in": "path",
@@ -970,7 +977,8 @@ func init() {
         "operationId": "getTaskByTaskId",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "description": "task_id",
             "name": "task_id",
             "in": "path",
@@ -1113,7 +1121,7 @@ func init() {
           "type": "string"
         },
         "user_id": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         }
       }
@@ -1139,7 +1147,7 @@ func init() {
           "type": "boolean"
         },
         "subject_id": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         },
         "subject_name": {
@@ -1152,7 +1160,7 @@ func init() {
           }
         },
         "totalCount": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         }
       }
@@ -1167,7 +1175,7 @@ func init() {
           }
         },
         "totalCount": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         }
       }
@@ -1182,7 +1190,7 @@ func init() {
           "type": "boolean"
         },
         "subject_id": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         },
         "subject_name": {
@@ -1200,7 +1208,7 @@ func init() {
           }
         },
         "totalCount": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         }
       }
@@ -1217,8 +1225,12 @@ func init() {
         "is_archived": {
           "type": "boolean"
         },
+        "state_id": {
+          "type": "integer",
+          "format": "int64"
+        },
         "subject_id": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         },
         "subject_name": {
@@ -1246,7 +1258,7 @@ func init() {
           }
         },
         "totalCount": {
-          "type": "number",
+          "type": "integer",
           "format": "int64"
         }
       }

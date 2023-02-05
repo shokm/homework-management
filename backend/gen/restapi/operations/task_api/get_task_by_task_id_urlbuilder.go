@@ -10,11 +10,13 @@ import (
 	"net/url"
 	golangswaggerpaths "path"
 	"strings"
+
+	"github.com/go-openapi/swag"
 )
 
 // GetTaskByTaskIDURL generates an URL for the get task by task Id operation
 type GetTaskByTaskIDURL struct {
-	TaskID string
+	TaskID int64
 
 	_basePath string
 	// avoid unkeyed usage
@@ -42,7 +44,7 @@ func (o *GetTaskByTaskIDURL) Build() (*url.URL, error) {
 
 	var _path = "/task/{task_id}"
 
-	taskID := o.TaskID
+	taskID := swag.FormatInt64(o.TaskID)
 	if taskID != "" {
 		_path = strings.Replace(_path, "{task_id}", taskID, -1)
 	} else {

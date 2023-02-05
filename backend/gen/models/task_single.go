@@ -26,6 +26,9 @@ type TaskSingle struct {
 	// is archived
 	IsArchived bool `json:"is_archived,omitempty"`
 
+	// state id
+	StateID int64 `json:"state_id,omitempty"`
+
 	// subject id
 	SubjectID int64 `json:"subject_id,omitempty"`
 

@@ -10,11 +10,13 @@ import (
 	"net/url"
 	golangswaggerpaths "path"
 	"strings"
+
+	"github.com/go-openapi/swag"
 )
 
 // GetSubjectBySubjectIDURL generates an URL for the get subject by subject Id operation
 type GetSubjectBySubjectIDURL struct {
-	SubjectID string
+	SubjectID int64
 
 	_basePath string
 	// avoid unkeyed usage
@@ -42,7 +44,7 @@ func (o *GetSubjectBySubjectIDURL) Build() (*url.URL, error) {
 
 	var _path = "/subject/{subject_id}"
 
-	subjectID := o.SubjectID
+	subjectID := swag.FormatInt64(o.SubjectID)
 	if subjectID != "" {
 		_path = strings.Replace(_path, "{subject_id}", subjectID, -1)
 	} else {

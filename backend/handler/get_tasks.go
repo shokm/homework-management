@@ -5,13 +5,9 @@ import (
 	"backend/gen/restapi/operations/task_api"
 	"backend/handler/auth_jwt"
 	"backend/handler/database"
-	"backend/handler/dotenv"
-	"errors"
 	"strconv"
 
 	"github.com/go-openapi/runtime/middleware"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 )
 
 func GetTasks(params task_api.GetTasksParams, principal interface{}) middleware.Responder {
@@ -43,7 +39,7 @@ func GetTasks(params task_api.GetTasksParams, principal interface{}) middleware.
 	}
 
 	// DBから結果を取得
-	taskListsFromDB, err := GetTasksByUserIdFromDB(userID, isArchived)
+	resultListsFromDB, err := database.GetTasksByUserID(userID, isArchived)
 	if err != nil {
 		return task_api.NewGetTasksServiceUnavailable()
 	}
@@ -52,45 +48,23 @@ func GetTasks(params task_api.GetTasksParams, principal interface{}) middleware.
 	result := models.TasksMultiple{}
 
 	// 結果を詰めていく
-	length := len(taskListsFromDB)
+	length := len(resultListsFromDB)
 	result.TotalCount = int64(length)
 	for i := 0; i < length; i++ {
 		// tmp変数
 		tmpTaskSingle := models.TaskSingle{}
-		tmpTaskSingle.CreatedAt = strconv.FormatInt(taskListsFromDB[i].CreatedAt.Unix(), 10)
-		tmpTaskSingle.DeadlineAt = strconv.FormatInt(taskListsFromDB[i].DeadlineAt.Unix(), 10)
-		tmpTaskSingle.IsArchived = taskListsFromDB[i].IsArchived
-		tmpTaskSingle.SubjectID = int64(taskListsFromDB[i].SubjectID)
-		// TODO: subjectNameを取得・DB側でJOINの必要あり
-		// tmpTaskSingle.SubjectName = taskListsFromDB[i]
-		tmpTaskSingle.TaskDescription = taskListsFromDB[i].TaskDescription
-		tmpTaskSingle.TaskID = int64(taskListsFromDB[i].TaskID)
-		tmpTaskSingle.TaskName = taskListsFromDB[i].TaskName
+		tmpTaskSingle.CreatedAt = strconv.FormatInt(resultListsFromDB[i].CreatedAt.Unix(), 10)
+		tmpTaskSingle.DeadlineAt = strconv.FormatInt(resultListsFromDB[i].DeadlineAt.Unix(), 10)
+		tmpTaskSingle.IsArchived = resultListsFromDB[i].IsArchived
+		tmpTaskSingle.SubjectID = int64(resultListsFromDB[i].SubjectID)
+		tmpTaskSingle.SubjectName = resultListsFromDB[i].SubjectName
+		tmpTaskSingle.StateID = int64(resultListsFromDB[i].StateID)
+		tmpTaskSingle.TaskDescription = resultListsFromDB[i].TaskDescription
+		tmpTaskSingle.TaskID = int64(resultListsFromDB[i].TaskID)
+		tmpTaskSingle.TaskName = resultListsFromDB[i].TaskName
 		// tmp変数に入れた結果をresultに格納
 		result.Tasks = append(result.Tasks, &tmpTaskSingle)
 	}
 
 	return task_api.NewGetTasksOK().WithPayload(&result)
-}
-
-func GetTasksByUserIdFromDB(userID int64, isArchived bool) ([]database.TaskLists, error){
-		// 結果を入れるtaskLists
-		taskLists := []database.TaskLists{}
-
-		// dsnをdotenvから読み込み
-		dsnLoadByDotenv, err := dotenv.LoadDataSourceName()
-		if err != nil {
-			return taskLists, errors.New("failed to read secret key")
-		}
-		dsn := dsnLoadByDotenv.(string)
-
-		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-		if err != nil {
-			return taskLists, errors.New(err.Error())
-		}
-
-		// SELECT文
-		db.Model(&database.TaskLists{}).Where("user_id = ? AND is_archived = ?", userID, isArchived).Find(&taskLists)
-
-		return taskLists, nil
 }
