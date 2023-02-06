@@ -5,7 +5,7 @@ import (
 	"backend/gen/restapi/operations/task_api"
 	"backend/handler/auth_jwt"
 	"backend/handler/database"
-	"strconv"
+	"time"
 
 	"github.com/go-openapi/runtime/middleware"
 )
@@ -41,7 +41,7 @@ func GetSubjectBySubjectID(params task_api.GetSubjectBySubjectIDParams, principa
 	result := models.SubjectSingle{}
 
 	// 結果を詰めていく
-	result.CreatedAt = strconv.FormatInt(resultListFromDB.CreatedAt.Unix(), 10)
+	result.CreatedAt = resultListFromDB.CreatedAt.Format(time.RFC3339Nano)
 	result.IsArchived = resultListFromDB.IsArchived
 	result.SubjectID = int64(resultListFromDB.SubjectID)
 	result.SubjectName = resultListFromDB.SubjectName

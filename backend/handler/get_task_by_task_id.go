@@ -5,7 +5,7 @@ import (
 	"backend/gen/restapi/operations/task_api"
 	"backend/handler/auth_jwt"
 	"backend/handler/database"
-	"strconv"
+	"time"
 
 	"github.com/go-openapi/runtime/middleware"
 )
@@ -41,8 +41,8 @@ func GetTaskByTaskID(params task_api.GetTaskByTaskIDParams, principal interface{
 	result := models.TaskSingle{}
 
 	// 結果を詰めていく
-	result.CreatedAt = strconv.FormatInt(resultListFromDB.CreatedAt.Unix(), 10)
-	result.DeadlineAt = strconv.FormatInt(resultListFromDB.DeadlineAt.Unix(), 10)
+	result.CreatedAt = resultListFromDB.CreatedAt.Format(time.RFC3339Nano)
+	result.DeadlineAt = resultListFromDB.DeadlineAt.In(time.FixedZone("Asia/Tokyo", 9*60*60)).Format(time.RFC3339Nano)
 	result.IsArchived = resultListFromDB.IsArchived
 	result.SubjectID = int64(resultListFromDB.SubjectID)
 	result.SubjectName = resultListFromDB.SubjectName

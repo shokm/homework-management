@@ -6,7 +6,6 @@ import (
 	"backend/handler/auth_jwt"
 	"backend/handler/database"
 	"errors"
-	"strconv"
 	"time"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -49,8 +48,8 @@ func PostTaskByTaskID(params task_api.PostTaskByTaskIDParams, principal interfac
 	}
 
 	// 結果を詰めていく
-	result.CreatedAt = strconv.FormatInt(resultListFromDB.CreatedAt.Unix(), 10)
-	result.DeadlineAt = strconv.FormatInt(resultListFromDB.DeadlineAt.Unix(), 10)
+	result.CreatedAt = resultListFromDB.CreatedAt.Format(time.RFC3339Nano)
+	result.DeadlineAt = resultListFromDB.DeadlineAt.Format(time.RFC3339Nano)
 	result.IsArchived = resultListFromDB.IsArchived
 	result.SubjectID = int64(resultListFromDB.SubjectID)
 	result.SubjectName = resultListFromDB.SubjectName
@@ -67,8 +66,7 @@ func addTaskValue(postData models.TaskSingle, userID int64) (database.TaskApiRes
 
 	// 書き込む値を入れる変数
 	postTaskList := database.TaskLists{}
-
-	postTaskList.DeadlineAt, _ = time.Parse("2006-01-02 15:04:05", postData.DeadlineAt)
+	postTaskList.DeadlineAt, _ = time.Parse(time.RFC3339Nano, postData.DeadlineAt)
 	postTaskList.IsArchived = postData.IsArchived
 	postTaskList.StateID = uint(postData.StateID)
 	postTaskList.SubjectID = uint(postData.SubjectID)
@@ -97,7 +95,7 @@ func updTaskValue(postData models.TaskSingle, userID int64, taskID int64) (datab
 	// 書き込む値を入れる変数
 	postTaskList := database.TaskLists{}
 
-	postTaskList.DeadlineAt, _ = time.Parse("2006-01-02 15:04:05", postData.DeadlineAt)
+	postTaskList.DeadlineAt, _ = time.Parse(time.RFC3339Nano, postData.DeadlineAt)
 	postTaskList.IsArchived = postData.IsArchived
 	postTaskList.StateID = uint(postData.StateID)
 	postTaskList.SubjectID = uint(postData.SubjectID)

@@ -5,7 +5,7 @@ import (
 	"backend/gen/restapi/operations/task_api"
 	"backend/handler/auth_jwt"
 	"backend/handler/database"
-	"strconv"
+	"time"
 
 	"github.com/go-openapi/runtime/middleware"
 )
@@ -53,8 +53,8 @@ func GetTasks(params task_api.GetTasksParams, principal interface{}) middleware.
 	for i := 0; i < length; i++ {
 		// tmp変数
 		tmpTaskSingle := models.TaskSingle{}
-		tmpTaskSingle.CreatedAt = strconv.FormatInt(resultListsFromDB[i].CreatedAt.Unix(), 10)
-		tmpTaskSingle.DeadlineAt = strconv.FormatInt(resultListsFromDB[i].DeadlineAt.Unix(), 10)
+		tmpTaskSingle.CreatedAt = resultListsFromDB[i].CreatedAt.Format(time.RFC3339Nano)
+		tmpTaskSingle.DeadlineAt = resultListsFromDB[i].DeadlineAt.In(time.FixedZone("Asia/Tokyo", 9*60*60)).Format(time.RFC3339Nano)
 		tmpTaskSingle.IsArchived = resultListsFromDB[i].IsArchived
 		tmpTaskSingle.SubjectID = int64(resultListsFromDB[i].SubjectID)
 		tmpTaskSingle.SubjectName = resultListsFromDB[i].SubjectName
