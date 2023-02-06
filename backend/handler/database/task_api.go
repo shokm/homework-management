@@ -323,3 +323,34 @@ func PutSubjectBySubjectID(postSubjectLists SubjectLists, userID int64, SubjectI
 
 	return resultList, nil
 }
+
+func GetTasksBySubjectID(userID int64, subjectID int64, isArchived bool) ([]TaskLists, error){
+	// 結果を入れるtaskLists
+	resultLists := []TaskLists{}
+
+	// dsnをdotenvから読み込み
+	dsnLoadByDotenv, err := dotenv.LoadDataSourceName()
+	if err != nil {
+		return resultLists, errors.New("failed to read secret key")
+	}
+	dsn := dsnLoadByDotenv.(string)
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		return resultLists, errors.New(err.Error())
+	}
+
+	// SELECT文
+	// db.Model(&TaskLists{}).Where("task_lists.user_id = ? AND task_lists.is_archived = ?", userID, isArchived).Joins("left join subject_lists on task_lists.subject_id = subject_lists.subject_id").Find(&resultLists)
+	// TODO: db.Debug()
+	db.Debug().Model(&TaskLists{}).Where("user_id = ? AND subject_id = ? AND is_archived = ?", userID, subjectID, isArchived).Order("task_id asc").Scan(&resultLists)
+
+	// セッションを切る
+	sqlDB, err := db.DB()
+	if err != nil {
+		return resultLists, errors.New(err.Error())
+	}
+	sqlDB.Close()
+
+	return resultLists, nil
+}

@@ -190,7 +190,7 @@ func setupGlobalMiddleware(handler http.Handler) http.Handler {
 	})
 	/**/
 
-	handleCORS := cors.Default().Handler
+	handleCORS := cors.AllowAll().Handler
 
     return handleCORS(handler)
 }

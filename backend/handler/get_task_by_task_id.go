@@ -21,6 +21,16 @@ func GetTaskByTaskID(params task_api.GetTaskByTaskIDParams, principal interface{
 	userInfo := returnValue.(models.AuthReturnUser)
 	userID := userInfo.UserID
 
+	// リクエストされたtaskIDが該当ユーザーのものか・taskIDが存在するかどうか検索
+	resultTaskIDCount, err := database.GetCountTaskByTaskID(userID, int64(params.TaskID))
+	if err != nil {
+		return task_api.NewGetTaskByTaskIDInternalServerError()
+	}
+	if resultTaskIDCount == 0 {
+		// IDが存在しない場合
+		return task_api.NewGetTaskByTaskIDNotFound()
+	}
+
 	// DBから結果を取得
 	resultListFromDB, err := database.GetTaskByTaskID(userID, params.TaskID)
 	if err != nil {

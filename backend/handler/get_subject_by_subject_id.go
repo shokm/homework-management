@@ -21,6 +21,16 @@ func GetSubjectBySubjectID(params task_api.GetSubjectBySubjectIDParams, principa
 	userInfo := returnValue.(models.AuthReturnUser)
 	userID := userInfo.UserID
 
+	// リクエストされたtaskIDが該当ユーザーのものか・taskIDが存在するかどうか検索
+	resultSubjectIDCount, err := database.GetCountSubjectBySubjectID(userID, int64(params.SubjectID))
+	if err != nil {
+		return task_api.NewGetSubjectBySubjectIDInternalServerError()
+	}
+	if resultSubjectIDCount == 0 {
+		// IDが存在しない場合
+		return task_api.NewGetSubjectBySubjectIDNotFound()
+	}
+
 	// DBから結果を取得
 	resultListFromDB, err := database.GetSubjectBySubjectID(userID, params.SubjectID)
 	if err != nil {
