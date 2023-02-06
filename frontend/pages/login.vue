@@ -1,23 +1,37 @@
 <template>
-  <div>
-    <div>
-      <h1>ログインユーザ</h1>
+  <div class="flex justify-center">
+    <div
+      class="bg-white shadow-xl rounded-xl md:w-auto w-11/12 md:p-20 p-5 md:m-20 m-5"
+    >
+      <h1 class="flex justify-center mb-10 font-medium text-4xl">Login</h1>
       <p>{{ message }}</p>
       <form @submit.prevent="loginUser">
-        <div class="form-group">
-          <label for="userName">ユーザー名:</label>
-          <input v-model="user.screen_name" />
+        <div class="my-2">
+          <label for="userName">ユーザー名</label>
+          <br />
+          <input
+            v-model="user.screen_name"
+            class="border border-DEFAULT md:w-96 w-full max-h-16 shadow-inner rounded-xl bg-transparent text-current p-5"
+          />
         </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input v-model="user.password" type="password" />
+        <div class="my-2">
+          <label for="password">パスワード</label>
+          <br />
+          <input
+            v-model="user.password"
+            type="password"
+            class="border border-DEFAULT md:w-96 w-full max-h-16 shadow-inner rounded-xl bg-transparent text-current p-5"
+          />
         </div>
-        <button type="submit">ログイン</button>
+        <div class="mt-2">
+          <button
+            type="submit"
+            class="md:w-96 w-full max-h-16 rounded-xl bg-blue-600 text-center text-white p-5"
+          >
+            ログイン
+          </button>
+        </div>
       </form>
-    </div>
-    <div v-if="$auth.loggedIn">
-      <button @click="$auth.logout()">Logout</button>
-      <nuxt-link to="/">ログイン状態をチェック</nuxt-link>
     </div>
   </div>
 </template>
@@ -37,15 +51,21 @@ export default Vue.extend({
       message: ''
     }
   },
+  head: {
+    bodyAttrs: {
+      class: 'bg-gray-50'
+    }
+  },
   methods: {
     async loginUser() {
+      await this.$auth.logout()
       try {
         await this.$auth.loginWith('local', {
           data: this.user
         })
         // this.message = 'ログイン成功'
       } catch (e) {
-        this.message = e
+        this.message = String(e)
       }
     }
   }
