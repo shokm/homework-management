@@ -10,6 +10,15 @@ import (
 
 func PostAuthRegister(params auth_api.PostAuthRegisterParams) middleware.Responder {
 
+	// TODO: バリデーションをかける
+	// スクリーンネームとパスワードが空だった場合、エラー
+	if params.Body.ScreenName == "" {
+		return auth_api.NewPostAuthLoginUnauthorized()
+	}
+	if params.Body.Password == "" {
+		return auth_api.NewPostAuthLoginUnauthorized()
+	}
+
 	// ユーザー作成
 	err := database.CreateUserDB(*params.Body)
 	if err != nil {

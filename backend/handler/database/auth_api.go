@@ -24,24 +24,6 @@ func LoginAuthDB(body models.AuthUserReq) error {
 		return errors.New("failed to connect database")
 	}
 
-	// スクリーンネームとパスワードが空だった場合、エラー
-	if body.ScreenName == "" {
-		sqlDB, err := db.DB()
-		if err != nil {
-			return errors.New(err.Error())
-		}
-		sqlDB.Close()
-		return errors.New("screen_name is empty")
-	}
-	if body.Password == "" {
-		sqlDB, err := db.DB()
-		if err != nil {
-			return errors.New(err.Error())
-		}
-		sqlDB.Close()
-		return errors.New("password is empty")
-	}
-
 	// ユーザー情報を取得
 	userInfo := UserLists{}
 	db.Model(&UserLists{}).Where("screen_name = ?", body.ScreenName).First(&userInfo)
@@ -82,24 +64,6 @@ func CreateUserDB(body models.AuthUserReq) error {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return errors.New("failed to connect database")
-	}
-
-	// スクリーンネームとパスワードが空だった場合、エラー
-	if body.ScreenName == "" {
-		sqlDB, err := db.DB()
-		if err != nil {
-			return errors.New(err.Error())
-		}
-		sqlDB.Close()
-		return errors.New("screen_name is empty")
-	}
-	if body.Password == "" {
-		sqlDB, err := db.DB()
-		if err != nil {
-			return errors.New(err.Error())
-		}
-		sqlDB.Close()
-		return errors.New("password is empty")
 	}
 
 	// スクリーンネームが既に存在する場合、エラー
