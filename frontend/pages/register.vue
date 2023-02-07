@@ -11,6 +11,7 @@
           <br />
           <input
             v-model="user.screen_name"
+            type="text"
             class="border border-DEFAULT md:w-96 w-full max-h-16 shadow-inner rounded-xl bg-transparent text-current p-5"
           />
         </div>
@@ -38,8 +39,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import axios from '@nuxtjs/axios'
-import auth from '@nuxtjs/auth-next'
+import $axios from '@nuxtjs/axios'
+import $auth from '@nuxtjs/auth-next'
 
 export default Vue.extend({
   data() {
@@ -60,13 +61,13 @@ export default Vue.extend({
     async registerUser() {
       await this.$auth.logout()
       try {
-        await this.$axios.post('/v1/auth/register', this.user)
+        await this.$axios.$post('/v1/auth/register', this.user)
         await this.$auth.loginWith('local', {
           data: this.user
         })
         // this.message = '登録成功'
       } catch (e) {
-        this.message = e
+        this.message = String(e)
       }
     }
   }

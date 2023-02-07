@@ -11,6 +11,7 @@
           <br />
           <input
             v-model="user.screen_name"
+            type="text"
             class="border border-DEFAULT md:w-96 w-full max-h-16 shadow-inner rounded-xl bg-transparent text-current p-5"
           />
         </div>
@@ -38,8 +39,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import axios from '@nuxtjs/axios'
-import auth from '@nuxtjs/auth-next'
+import $axios from '@nuxtjs/axios'
+import $auth from '@nuxtjs/auth-next'
 
 export default Vue.extend({
   data() {
