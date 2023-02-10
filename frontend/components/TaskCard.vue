@@ -105,7 +105,7 @@ export default Vue.extend({
   props: {
     tasks: {
       type: Array,
-      default: Array<TaskSingle>
+      default: [] as Array<TaskSingle>
     } as Vue.PropOptions<Array<TaskSingle>>
   }
 })
