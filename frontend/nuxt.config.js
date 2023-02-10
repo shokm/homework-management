@@ -46,13 +46,14 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/dotenv',
     '@nuxtjs/auth-next',
     '@nuxtjs/dayjs',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://localhost:8888/',
+    baseURL: process.env.API_BASE_URL,
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
