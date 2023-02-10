@@ -64,7 +64,7 @@ export default Vue.extend({
   },
   computed: {
     tasksExpired() {
-      const resultArray = []
+      const resultArray: Array<TaskSingle> = []
       for (let index = 0; index < this.tasks.totalCount; index++) {
         if (
           this.$dayjs(
@@ -79,7 +79,7 @@ export default Vue.extend({
       return resultArray
     },
     tasksToday() {
-      const resultArray = []
+      const resultArray: Array<TaskSingle> = []
       for (let index = 0; index < this.tasks.totalCount; index++) {
         if (
           !this.$dayjs(
@@ -97,7 +97,7 @@ export default Vue.extend({
       return resultArray
     },
     tasksTomorrow() {
-      const resultArray = []
+      const resultArray: Array<TaskSingle> = []
       for (let index = 0; index < this.tasks.totalCount; index++) {
         if (
           this.$dayjs(
