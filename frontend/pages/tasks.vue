@@ -9,36 +9,20 @@
           >教科ごと</nuxt-link
         >
       </div>
-      <h2 class="mt-8 font-medium text-xl">今日まで</h2>
-      <div v-for="task in tasks.tasks" :key="task.task_id">
-        <div
-          :to="'/task/' + task.task_id"
-          class="flex items-center mt-3 bg-white border border-DEFAULT shadow-lg rounded-xl"
-        >
-          <button
-            onclick="alert('完了ボタン押下')"
-            class="flex items-center justify-center m-3 mr-2 w-12 h-12 bg-gray-600 text-white shadow-lg rounded-lg"
-          >
-            ☑︎
-          </button>
-          <nuxt-link :to="'/task/' + task.task_id" class="p-3 pl-2 leading-6">
-            <p>{{ task.task_id }} {{ task.task_name }}</p>
-            <p>
-              教科：{{ task.subject_name }} 期限：
-              <span
-                v-if="
-                  !$dayjs($dayjs(task.deadline_at).format('YYYY-MM-DD')).isSame(
-                    $dayjs('1-01-01')
-                  )
-                "
-              >
-                {{ $dayjs(task.deadline_at).format('YYYY/MM/DD hh:mm') }}
-              </span>
-              <span v-else>---/--/--</span>
-            </p>
-          </nuxt-link>
-        </div>
+      <div v-if="tasksExpired.length">
+        <h2 class="mt-8 font-medium text-xl">期限切れ</h2>
+        <TaskCard :tasks="tasksExpired"></TaskCard>
       </div>
+      <div v-if="tasksToday.length">
+        <h2 class="mt-8 font-medium text-xl">今日まで</h2>
+        <TaskCard :tasks="tasksToday"></TaskCard>
+      </div>
+      <div v-if="tasksTomorrow.length">
+        <h2 class="mt-8 font-medium text-xl">明日まで</h2>
+        <TaskCard :tasks="tasksTomorrow"></TaskCard>
+      </div>
+      <h2 class="mt-8 font-medium text-xl">全て</h2>
+      <TaskCard :tasks="tasks.tasks"></TaskCard>
     </div>
   </div>
 </template>
@@ -48,17 +32,73 @@ import Vue from 'vue'
 import $axios from '@nuxtjs/axios'
 import $auth from '@nuxtjs/auth-next'
 import $dayjs from '@nuxtjs/dayjs'
+import TaskCard from '@/components/TaskCard.vue'
 
 export default Vue.extend({
+  components: {
+    TaskCard
+  },
   middleware: 'auth',
   data() {
     return {
+      TODAY: this.$dayjs(new Date()),
       tasks: {}
+    }
+  },
+  computed: {
+    tasksExpired() {
+      const resultArray = []
+      for (let index = 0; index < this.tasks.totalCount; index++) {
+        if (
+          this.$dayjs(
+            this.$dayjs(this.tasks.tasks[index].deadline_at).format(
+              'YYYY-MM-DDTHH:mm:ssZ'
+            )
+          ).isBefore(this.TODAY.format('YYYY-MM-DDTHH:mm:ssZ'))
+        ) {
+          resultArray.push(this.tasks.tasks[index])
+        }
+      }
+      return resultArray
+    },
+    tasksToday() {
+      const resultArray = []
+      for (let index = 0; index < this.tasks.totalCount; index++) {
+        if (
+          !this.$dayjs(
+            this.$dayjs(this.tasks.tasks[index].deadline_at).format(
+              'YYYY-MM-DDTHH:mm:ssZ'
+            )
+          ).isBefore(this.TODAY.format('YYYY-MM-DDTHH:mm:ssZ')) &&
+          this.$dayjs(
+            this.$dayjs(this.tasks.tasks[index].deadline_at).format(
+              'YYYY-MM-DD'
+            )
+          ).isSame(this.TODAY.format('YYYY-MM-DD'))
+        ) {
+          resultArray.push(this.tasks.tasks[index])
+        }
+      }
+      return resultArray
+    },
+    tasksTomorrow() {
+      const resultArray = []
+      for (let index = 0; index < this.tasks.totalCount; index++) {
+        if (
+          this.$dayjs(
+            this.$dayjs(this.tasks.tasks[index].deadline_at).format(
+              'YYYY-MM-DD'
+            )
+          ).isSame(this.TODAY.add(1, 'days').format('YYYY-MM-DD'))
+        ) {
+          resultArray.push(this.tasks.tasks[index])
+        }
+      }
+      return resultArray
     }
   },
   created() {
     this.$axios.$get('/v1/tasks').then((response) => (this.tasks = response))
-  },
-  methods: {}
+  }
 })
 </script>
