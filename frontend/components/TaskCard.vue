@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-for="task in tasks" :key="task.task_id">
+    <div v-for="task in tasks" :key="task.taskID">
       <div
-        :to="'/task/' + task.task_id"
+        :to="'/task/' + task.taskID"
         class="flex items-center mt-3 bg-white border border-gray-100 shadow-lg rounded-xl"
       >
         <button
@@ -12,7 +12,7 @@
           ☑︎
         </button>
         <nuxt-link
-          :to="'/task/' + task.task_id"
+          :to="'/task/' + task.taskID"
           class="p-3 pl-2 text-current leading-6"
         >
           <p class="flex items-center">
@@ -30,7 +30,7 @@
                 d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
               />
             </svg>
-            {{ task.task_name }}
+            {{ task.taskName }}
           </p>
           <p class="flex items-center">
             <svg
@@ -48,8 +48,8 @@
               />
             </svg>
 
-            <span v-if="task.subject_name">
-              {{ task.subject_name }}
+            <span v-if="task.subjectName">
+              {{ task.subjectName }}
             </span>
             <span v-else>----</span>
 
@@ -70,12 +70,12 @@
 
             <span
               v-if="
-                !$dayjs($dayjs(task.deadline_at).format('YYYY-MM-DD')).isSame(
+                !$dayjs($dayjs(task.deadlineAt).format('YYYY-MM-DD')).isSame(
                   $dayjs('1-01-01')
                 )
               "
             >
-              {{ $dayjs(task.deadline_at).format('YYYY/MM/DD hh:mm') }}
+              {{ $dayjs(task.deadlineAt).format('YYYY/MM/DD hh:mm') }}
             </span>
             <span v-else>----/--/--</span>
           </p>
@@ -89,7 +89,25 @@
 import Vue from 'vue'
 import $dayjs from '@nuxtjs/dayjs'
 
+type TaskSingle = {
+  taskID: number
+  taskName: string
+  taskDescription: string
+  deadlineAt: string
+  createdAt: string
+  isArchived: boolean
+  subjectID: number
+  subjectName: string
+  stateID: number
+}
+
 export default Vue.extend({
-  props: ['tasks']
+  props: {
+    tasks: {
+      type: Array<TaskSingle>,
+      required: true,
+      default: ''
+    }
+  }
 })
 </script>

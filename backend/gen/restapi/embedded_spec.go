@@ -489,10 +489,10 @@ func init() {
     "AuthReturnUser": {
       "type": "object",
       "properties": {
-        "screen_name": {
+        "screenName": {
           "type": "string"
         },
-        "user_id": {
+        "userID": {
           "type": "integer",
           "format": "int64"
         }
@@ -504,7 +504,7 @@ func init() {
         "password": {
           "type": "string"
         },
-        "screen_name": {
+        "screenName": {
           "type": "string"
         }
       }
@@ -512,17 +512,17 @@ func init() {
     "ReturnTasksBySubject": {
       "type": "object",
       "properties": {
-        "created_at": {
+        "createdAt": {
           "type": "string"
         },
-        "is_archived": {
+        "isArchived": {
           "type": "boolean"
         },
-        "subject_id": {
+        "subjectID": {
           "type": "integer",
           "format": "int64"
         },
-        "subject_name": {
+        "subjectName": {
           "type": "string"
         },
         "tasks": {
@@ -555,17 +555,17 @@ func init() {
     "SubjectSingle": {
       "type": "object",
       "properties": {
-        "created_at": {
+        "createdAt": {
           "type": "string"
         },
-        "is_archived": {
+        "isArchived": {
           "type": "boolean"
         },
-        "subject_id": {
+        "subjectID": {
           "type": "integer",
           "format": "int64"
         },
-        "subject_name": {
+        "subjectName": {
           "type": "string"
         }
       }
@@ -588,34 +588,34 @@ func init() {
     "TaskSingle": {
       "type": "object",
       "properties": {
-        "created_at": {
+        "createdAt": {
           "type": "string"
         },
-        "deadline_at": {
+        "deadlineAt": {
           "type": "string"
         },
-        "is_archived": {
+        "isArchived": {
           "type": "boolean"
         },
-        "state_id": {
+        "stateID": {
           "type": "integer",
           "format": "int64"
         },
-        "subject_id": {
+        "subjectID": {
           "type": "integer",
           "format": "int64"
         },
-        "subject_name": {
+        "subjectName": {
           "type": "string"
         },
-        "task_description": {
+        "taskDescription": {
           "type": "string"
         },
-        "task_id": {
+        "taskID": {
           "type": "integer",
           "format": "int64"
         },
-        "task_name": {
+        "taskName": {
           "type": "string"
         }
       }
@@ -1117,10 +1117,10 @@ func init() {
     "AuthReturnUser": {
       "type": "object",
       "properties": {
-        "screen_name": {
+        "screenName": {
           "type": "string"
         },
-        "user_id": {
+        "userID": {
           "type": "integer",
           "format": "int64"
         }
@@ -1132,7 +1132,7 @@ func init() {
         "password": {
           "type": "string"
         },
-        "screen_name": {
+        "screenName": {
           "type": "string"
         }
       }
@@ -1140,17 +1140,17 @@ func init() {
     "ReturnTasksBySubject": {
       "type": "object",
       "properties": {
-        "created_at": {
+        "createdAt": {
           "type": "string"
         },
-        "is_archived": {
+        "isArchived": {
           "type": "boolean"
         },
-        "subject_id": {
+        "subjectID": {
           "type": "integer",
           "format": "int64"
         },
-        "subject_name": {
+        "subjectName": {
           "type": "string"
         },
         "tasks": {
@@ -1183,17 +1183,17 @@ func init() {
     "SubjectSingle": {
       "type": "object",
       "properties": {
-        "created_at": {
+        "createdAt": {
           "type": "string"
         },
-        "is_archived": {
+        "isArchived": {
           "type": "boolean"
         },
-        "subject_id": {
+        "subjectID": {
           "type": "integer",
           "format": "int64"
         },
-        "subject_name": {
+        "subjectName": {
           "type": "string"
         }
       }
@@ -1216,34 +1216,34 @@ func init() {
     "TaskSingle": {
       "type": "object",
       "properties": {
-        "created_at": {
+        "createdAt": {
           "type": "string"
         },
-        "deadline_at": {
+        "deadlineAt": {
           "type": "string"
         },
-        "is_archived": {
+        "isArchived": {
           "type": "boolean"
         },
-        "state_id": {
+        "stateID": {
           "type": "integer",
           "format": "int64"
         },
-        "subject_id": {
+        "subjectID": {
           "type": "integer",
           "format": "int64"
         },
-        "subject_name": {
+        "subjectName": {
           "type": "string"
         },
-        "task_description": {
+        "taskDescription": {
           "type": "string"
         },
-        "task_id": {
+        "taskID": {
           "type": "integer",
           "format": "int64"
         },
-        "task_name": {
+        "taskName": {
           "type": "string"
         }
       }

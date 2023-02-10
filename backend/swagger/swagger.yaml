@@ -313,7 +313,7 @@ definitions: # definitionsオブジェクト
   AuthUserReq: # schemaオブジェクト
     type: "object"
     properties:
-      screen_name: # schemaオブジェクト
+      screenName: # schemaオブジェクト
         type: "string"
       password: # schemaオブジェクト
         type: "string"
@@ -325,10 +325,10 @@ definitions: # definitionsオブジェクト
   AuthReturnUser: # schemaオブジェクト
     type: "object"
     properties:
-      user_id: # schemaオブジェクト
+      userID: # schemaオブジェクト
         type: "integer"
         format: "int64"
-      screen_name:
+      screenName:
         type: "string"
   ReturnTasksBySubjects: # schemaオブジェクト
     type: "object"
@@ -346,14 +346,14 @@ definitions: # definitionsオブジェクト
       totalCount:
         type: "integer"
         format: "int64"
-      subject_id: # schemaオブジェクト
+      subjectID: # schemaオブジェクト
         type: "integer"
         format: "int64"
-      subject_name: # schemaオブジェクト
+      subjectName: # schemaオブジェクト
         type: "string"
-      created_at:
+      createdAt:
         type: "string"
-      is_archived:
+      isArchived:
         type: "boolean"
       tasks: # schemaオブジェクト
         type: "array"
@@ -372,14 +372,14 @@ definitions: # definitionsオブジェクト
   SubjectSingle: # schemaオブジェクト
     type: "object"
     properties:
-      subject_id: # schemaオブジェクト
+      subjectID: # schemaオブジェクト
         type: "integer"
         format: "int64"
-      subject_name: # schemaオブジェクト
+      subjectName: # schemaオブジェクト
         type: "string"
-      created_at:
+      createdAt:
         type: "string"
-      is_archived:
+      isArchived:
         type: "boolean"
   TasksMultiple: # schemaオブジェクト
     type: "object"
@@ -394,24 +394,24 @@ definitions: # definitionsオブジェクト
   TaskSingle: # schemaオブジェクト
     type: "object"
     properties:
-      task_id: # schemaオブジェクト
+      taskID: # schemaオブジェクト
         type: "integer"
         format: "int64"
-      task_name: # schemaオブジェクト
+      taskName: # schemaオブジェクト
         type: "string"
-      task_description: # schemaオブジェクト
+      taskDescription: # schemaオブジェクト
         type: "string"
-      deadline_at:
+      deadlineAt:
         type: "string"
-      created_at:
+      createdAt:
         type: "string"
-      is_archived:
+      isArchived:
         type: "boolean"
-      subject_id: # schemaオブジェクト
+      subjectID: # schemaオブジェクト
         type: "integer"
         format: "int64"
-      subject_name: # schemaオブジェクト
+      subjectName: # schemaオブジェクト
         type: "string"
-      state_id:
+      stateID:
         type: "integer"
         format: "int64"

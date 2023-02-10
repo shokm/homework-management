@@ -20,16 +20,16 @@ import (
 type ReturnTasksBySubject struct {
 
 	// created at
-	CreatedAt string `json:"created_at,omitempty"`
+	CreatedAt string `json:"createdAt,omitempty"`
 
 	// is archived
-	IsArchived bool `json:"is_archived,omitempty"`
+	IsArchived bool `json:"isArchived,omitempty"`
 
-	// subject id
-	SubjectID int64 `json:"subject_id,omitempty"`
+	// subject ID
+	SubjectID int64 `json:"subjectID,omitempty"`
 
 	// subject name
-	SubjectName string `json:"subject_name,omitempty"`
+	SubjectName string `json:"subjectName,omitempty"`
 
 	// tasks
 	Tasks []*TaskSingle `json:"tasks"`

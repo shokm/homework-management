@@ -10,7 +10,7 @@
           <label for="userName">ユーザー名</label>
           <br />
           <input
-            v-model="user.screen_name"
+            v-model="user.screenName"
             type="text"
             class="border border-DEFAULT md:w-96 w-full max-h-16 shadow-inner rounded-xl bg-transparent text-current p-5"
           />
@@ -46,7 +46,7 @@ export default Vue.extend({
   data() {
     return {
       user: {
-        screen_name: '',
+        screenName: '',
         password: ''
       },
       message: ''

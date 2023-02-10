@@ -6,25 +6,25 @@
       <p>{{ $auth.user }}</p>
       <br />
       <p
-        v-if="task.is_archived == true"
+        v-if="task.isArchived == true"
         class="md:w-96 w-full max-h-14 rounded-xl bg-red-200 text-center text-red-600 p-4"
       >
         完了済みの課題です
       </p>
       <input
-        v-model="task.task_name"
+        v-model="task.taskName"
         type="text"
         class="border border-DEFAULT md:w-96 w-full max-h-14 rounded-xl bg-transparent text-current p-5"
       />
       <br />
       <input
-        v-model="task.task_description"
+        v-model="task.taskDescription"
         type="text"
         class="border border-DEFAULT md:w-96 w-full max-h-14 rounded-xl bg-transparent text-current p-5"
       />
       <br />
       <input
-        v-model="$dayjs(task.deadline_at).format('YYYY-MM-DDThh:mm')"
+        v-model="$dayjs(task.deadlineAt).format('YYYY-MM-DDThh:mm')"
         type="datetime-local"
         class="border border-DEFAULT md:w-96 w-full max-h-14 rounded-xl bg-transparent text-current p-5"
       />
@@ -45,21 +45,23 @@ import $axios from '@nuxtjs/axios'
 import $auth from '@nuxtjs/auth-next'
 import $dayjs from '@nuxtjs/dayjs'
 
+type TaskSingle = {
+  taskID: number
+  taskName: string
+  taskDescription: string
+  deadlineAt: string
+  createdAt: string
+  isArchived: boolean
+  subjectID: number
+  subjectName: string
+  stateID: number
+}
+
 export default Vue.extend({
   middleware: 'auth',
   data() {
     return {
-      task: {
-        task_id: 0,
-        task_name: '',
-        task_description: '',
-        deadline_at: '',
-        created_at: '',
-        is_archived: false,
-        subject_id: 0,
-        subject_name: '',
-        state_id: 0
-      }
+      task: {} as TaskSingle
     }
   },
   created() {

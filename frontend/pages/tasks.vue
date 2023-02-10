@@ -34,6 +34,23 @@ import $auth from '@nuxtjs/auth-next'
 import $dayjs from '@nuxtjs/dayjs'
 import TaskCard from '@/components/TaskCard.vue'
 
+type TaskSingle = {
+  taskID: number
+  taskName: string
+  taskDescription: string
+  deadlineAt: string
+  createdAt: string
+  isArchived: boolean
+  subjectID: number
+  subjectName: string
+  stateID: number
+}
+
+type TasksMultiple = {
+  totalCount: number
+  tasks: Array<TaskSingle>
+}
+
 export default Vue.extend({
   components: {
     TaskCard
@@ -42,7 +59,7 @@ export default Vue.extend({
   data() {
     return {
       TODAY: this.$dayjs(new Date()),
-      tasks: {}
+      tasks: {} as TasksMultiple
     }
   },
   computed: {
@@ -51,7 +68,7 @@ export default Vue.extend({
       for (let index = 0; index < this.tasks.totalCount; index++) {
         if (
           this.$dayjs(
-            this.$dayjs(this.tasks.tasks[index].deadline_at).format(
+            this.$dayjs(this.tasks.tasks[index].deadlineAt).format(
               'YYYY-MM-DDTHH:mm:ssZ'
             )
           ).isBefore(this.TODAY.format('YYYY-MM-DDTHH:mm:ssZ'))
@@ -66,14 +83,12 @@ export default Vue.extend({
       for (let index = 0; index < this.tasks.totalCount; index++) {
         if (
           !this.$dayjs(
-            this.$dayjs(this.tasks.tasks[index].deadline_at).format(
+            this.$dayjs(this.tasks.tasks[index].deadlineAt).format(
               'YYYY-MM-DDTHH:mm:ssZ'
             )
           ).isBefore(this.TODAY.format('YYYY-MM-DDTHH:mm:ssZ')) &&
           this.$dayjs(
-            this.$dayjs(this.tasks.tasks[index].deadline_at).format(
-              'YYYY-MM-DD'
-            )
+            this.$dayjs(this.tasks.tasks[index].deadlineAt).format('YYYY-MM-DD')
           ).isSame(this.TODAY.format('YYYY-MM-DD'))
         ) {
           resultArray.push(this.tasks.tasks[index])
@@ -86,9 +101,7 @@ export default Vue.extend({
       for (let index = 0; index < this.tasks.totalCount; index++) {
         if (
           this.$dayjs(
-            this.$dayjs(this.tasks.tasks[index].deadline_at).format(
-              'YYYY-MM-DD'
-            )
+            this.$dayjs(this.tasks.tasks[index].deadlineAt).format('YYYY-MM-DD')
           ).isSame(this.TODAY.add(1, 'days').format('YYYY-MM-DD'))
         ) {
           resultArray.push(this.tasks.tasks[index])

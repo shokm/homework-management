@@ -18,10 +18,10 @@ import (
 type AuthReturnUser struct {
 
 	// screen name
-	ScreenName string `json:"screen_name,omitempty"`
+	ScreenName string `json:"screenName,omitempty"`
 
-	// user id
-	UserID int64 `json:"user_id,omitempty"`
+	// user ID
+	UserID int64 `json:"userID,omitempty"`
 }
 
 // Validate validates this auth return user

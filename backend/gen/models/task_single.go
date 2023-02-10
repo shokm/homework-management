@@ -18,31 +18,31 @@ import (
 type TaskSingle struct {
 
 	// created at
-	CreatedAt string `json:"created_at,omitempty"`
+	CreatedAt string `json:"createdAt,omitempty"`
 
 	// deadline at
-	DeadlineAt string `json:"deadline_at,omitempty"`
+	DeadlineAt string `json:"deadlineAt,omitempty"`
 
 	// is archived
-	IsArchived bool `json:"is_archived,omitempty"`
+	IsArchived bool `json:"isArchived,omitempty"`
 
-	// state id
-	StateID int64 `json:"state_id,omitempty"`
+	// state ID
+	StateID int64 `json:"stateID,omitempty"`
 
-	// subject id
-	SubjectID int64 `json:"subject_id,omitempty"`
+	// subject ID
+	SubjectID int64 `json:"subjectID,omitempty"`
 
 	// subject name
-	SubjectName string `json:"subject_name,omitempty"`
+	SubjectName string `json:"subjectName,omitempty"`
 
 	// task description
-	TaskDescription string `json:"task_description,omitempty"`
+	TaskDescription string `json:"taskDescription,omitempty"`
 
-	// task id
-	TaskID int64 `json:"task_id,omitempty"`
+	// task ID
+	TaskID int64 `json:"taskID,omitempty"`
 
 	// task name
-	TaskName string `json:"task_name,omitempty"`
+	TaskName string `json:"taskName,omitempty"`
 }
 
 // Validate validates this task single

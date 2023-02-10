@@ -21,7 +21,7 @@ type AuthUserReq struct {
 	Password string `json:"password,omitempty"`
 
 	// screen name
-	ScreenName string `json:"screen_name,omitempty"`
+	ScreenName string `json:"screenName,omitempty"`
 }
 
 // Validate validates this auth user req
