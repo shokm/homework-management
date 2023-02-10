@@ -1,3 +1,4 @@
+require('dotenv').config()
 export default {
   // Enable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: true,
