@@ -11,18 +11,30 @@
       </div>
       <div v-if="tasksExpired.length">
         <h2 class="mt-8 font-medium text-xl">期限切れ</h2>
-        <TaskCard :tasks="tasksExpired"></TaskCard>
+        <TaskCard
+          :tasks="tasksExpired"
+          @completeTask="postCompleteTask"
+        ></TaskCard>
       </div>
       <div v-if="tasksToday.length">
         <h2 class="mt-8 font-medium text-xl">今日まで</h2>
-        <TaskCard :tasks="tasksToday"></TaskCard>
+        <TaskCard
+          :tasks="tasksToday"
+          @completeTask="postCompleteTask"
+        ></TaskCard>
       </div>
       <div v-if="tasksTomorrow.length">
         <h2 class="mt-8 font-medium text-xl">明日まで</h2>
-        <TaskCard :tasks="tasksTomorrow"></TaskCard>
+        <TaskCard
+          :tasks="tasksTomorrow"
+          @completeTask="postCompleteTask"
+        ></TaskCard>
       </div>
       <h2 class="mt-8 font-medium text-xl">全て</h2>
-      <TaskCard :tasks="tasks.tasks"></TaskCard>
+      <TaskCard
+        :tasks="tasks.tasks"
+        @completeTask="postCompleteTask"
+      ></TaskCard>
     </div>
   </div>
 </template>
@@ -112,6 +124,11 @@ export default Vue.extend({
   },
   created() {
     this.$axios.$get('/v1/tasks').then((response) => (this.tasks = response))
+  },
+  methods: {
+    postCompleteTask(taskID: number) {
+      alert(taskID)
+    }
   }
 })
 </script>

@@ -6,7 +6,7 @@
         class="flex items-center mt-3 bg-white border border-gray-100 shadow-lg rounded-xl"
       >
         <button
-          onclick="alert('完了ボタン押下')"
+        @click="$emit('completeTask', task.taskID)"
           class="flex items-center justify-center m-3 mr-2 w-12 h-12 bg-gray-600 text-white shadow-lg rounded-lg"
         >
           ☑︎
