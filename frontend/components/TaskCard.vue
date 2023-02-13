@@ -32,6 +32,7 @@
                 />
               </svg>
               {{ task.taskName }}
+              (ID: {{ task.taskID }})
             </p>
             <p class="flex items-center">
               <svg
