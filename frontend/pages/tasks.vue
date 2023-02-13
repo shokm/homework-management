@@ -127,7 +127,21 @@ export default Vue.extend({
   },
   methods: {
     postCompleteTask(taskID: number) {
-      alert(taskID)
+      // taskIDから配列の位置を検索
+      const arrayNumber = this.tasks.tasks.findIndex(
+        (element) => element.taskID === taskID
+      )
+
+      // JSONを更新する（画面表示も消えた状態になる）
+      this.$set(this.tasks.tasks[arrayNumber], 'isArchived', true)
+
+      // POST
+      this.$axios
+        .$post('/v1/task/' + taskID, this.tasks.tasks[arrayNumber])
+        .catch(() =>
+          // 失敗したらJSONを更新して、画面表示を戻す
+          this.$set(this.tasks.tasks[arrayNumber], 'isArchived', false)
+        )
     }
   }
 })
