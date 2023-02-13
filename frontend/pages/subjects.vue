@@ -46,7 +46,7 @@
       <div class="w-5/12 flex justify-center">
         <nuxt-link
           to="/subject/0"
-          class="flex items-center justify-center m-4 mr-2 h-12 w-full bg-blue-600 text-white shadow-lg rounded-lg"
+          class="flex items-center justify-center m-4 ml-2 h-12 w-full bg-blue-600 text-white shadow-lg rounded-lg"
         >
           <span class="font-medium text-xl">教科の追加</span>
         </nuxt-link>
