@@ -36,15 +36,18 @@
           :tasks="tasks.tasks"
           @completeTask="postCompleteTask"
         ></TaskCard>
+        <div class="h-24">
+          <!-- 下のメニューバーの高さ分、下に余白を開ける -->
+        </div>
       </div>
     </div>
-    <div class="sticky flex bottom-0 bg-white h-24">
+    <div class="fixed inset-x-0 flex bottom-0 bg-white h-24">
       <div class="w-5/6 flex justify-center">
         <nuxt-link
           to="/task/0"
-          class="flex items-center justify-center m-4 h-12 w-full bg-blue-600 text-white shadow-lg rounded-lg"
+          class="flex items-center justify-center m-4 mr-2 h-12 w-full bg-blue-600 text-white shadow-lg rounded-lg"
         >
-          課題の追加
+          <span class="font-medium text-xl"> 課題の追加 </span>
         </nuxt-link>
       </div>
       <div class="w-1/6 flex justify-center">
@@ -53,7 +56,7 @@
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            class="m-5 w-10 h-10"
+            class="m-5 ml-2 w-10 h-10"
           >
             <path
               fill-rule="evenodd"
