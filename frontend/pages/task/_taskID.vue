@@ -4,12 +4,14 @@
       <div class="m-4 w-full">
         <div class="flex mt-8">
           <h1 class="font-medium text-3xl">
-            <span v-if="param === 0">課題追加</span><span v-else>課題編集</span>
+            <span v-if="param !== 0">課題編集</span><span v-else>課題追加</span>
           </h1>
+          <!-- TODO: すでにID:0のリンクにいる場合、画面遷移が効かないので暫定的に"'/task/new' + (param + 1)"でアクセスさせる。存在しないIDのため、エラーが起こり新規作成扱いになる。 -->
           <nuxt-link
-            to="/task/0"
+            v-if="param !== 0"
+            :to="'/task/new' + (param + 1)"
             class="ml-4 mt-1 font-medium text-2xl text-gray-400"
-            >課題追加</nuxt-link
+            >新規追加</nuxt-link
           >
         </div>
         <p v-if="task.taskID" class="mt-3">課題ID: {{ task.taskID }}</p>
@@ -53,7 +55,10 @@
           </div>
         </div>
 
-        <h2 class="mt-8 font-medium text-xl">教科</h2>
+        <h2 class="mt-8">
+          <span class="mr-2 font-medium text-xl">教科</span>
+          <nuxt-link to="/subjects">> 教科管理</nuxt-link>
+        </h2>
 
         <div
           class="flex items-center mt-3 bg-white border border-gray-100 shadow-lg rounded-xl"
@@ -62,11 +67,19 @@
             class="m-3 mr-0 w-2 h-12 bg-gray-600 text-white shadow-lg rounded-lg"
           ></div>
           <div class="p-3 pl-2 text-current leading-6">
-            <input
-              v-model="task.subjectName"
-              type="text"
-              class="h-12 rounded-lg text-lg text-current p-5 pl-2"
-            />
+            <select
+              v-model="task.subjectID"
+              class="border border-DEFAULT h-12 ml-2 rounded-lg text-lg text-current"
+              required
+            >
+              <option
+                v-for="subject in subjects.subjects"
+                :key="subject.subjectID"
+                :value="subject.subjectID"
+              >
+                {{ subject.subjectName }} (教科ID: {{ subject.subjectID }})
+              </option>
+            </select>
           </div>
         </div>
 
@@ -98,7 +111,7 @@
           to="/tasks"
           class="flex items-center justify-center m-4 mr-2 h-12 w-full bg-gray-600 text-white shadow-lg rounded-lg"
         >
-          <span class="font-medium text-xl"> 戻る </span>
+          <span class="font-medium text-xl">戻る</span>
         </nuxt-link>
       </div>
       <div class="w-5/12 flex justify-center">
@@ -107,7 +120,7 @@
           @click="updateTask"
         >
           <span class="font-medium text-xl">
-            <span v-if="param === 0">追加する</span><span v-else>保存する</span>
+            <span v-if="param !== 0">保存する</span><span v-else>追加する</span>
           </span>
         </button>
       </div>
@@ -150,11 +163,24 @@ type TaskSingle = {
   stateID: number
 }
 
+type SubjectSingle = {
+  subjectID: number
+  subjectName: string
+  createdAt: string
+  isArchived: boolean
+}
+
+type SubjectsMultiple = {
+  totalCount: number
+  subjects: Array<SubjectSingle>
+}
+
 export default Vue.extend({
   middleware: 'auth',
   data() {
     return {
       task: {} as TaskSingle,
+      subjects: {} as SubjectsMultiple,
       param: Number(this.$route.params.taskID)
     }
   },
@@ -165,6 +191,9 @@ export default Vue.extend({
         .then((response) => (this.task = response))
         .catch(() => (this.param = 0))
     }
+    this.$axios
+      .$get('/v1/subjects')
+      .then((response) => (this.subjects = response))
   },
   methods: {
     updateTask() {
