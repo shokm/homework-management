@@ -47,7 +47,7 @@
           to="/task/0"
           class="flex items-center justify-center m-4 mr-2 h-12 w-full bg-blue-600 text-white shadow-lg rounded-lg"
         >
-          <span class="font-medium text-xl"> 課題の追加 </span>
+          <span class="font-medium text-xl">課題の追加</span>
         </nuxt-link>
       </div>
       <div class="w-1/6 flex justify-center">

@@ -32,6 +32,9 @@
             </div>
           </div>
         </div>
+        <div class="h-24">
+          <!-- 下のメニューバーの高さ分、下に余白を開ける -->
+        </div>
       </div>
     </div>
     <div class="fixed inset-x-0 flex bottom-0 bg-white h-24">
