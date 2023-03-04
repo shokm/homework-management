@@ -5,10 +5,10 @@
         <div class="flex mt-8">
           <h1 class="font-medium text-3xl">課題一覧</h1>
           <nuxt-link
-            to="/subjects/tasks/"
+            to="/subjects/"
             class="ml-4 mt-1 font-medium text-2xl text-gray-400"
-            >教科ごと</nuxt-link
-          >
+            >教科一覧
+          </nuxt-link>
         </div>
         <div v-if="tasksExpired.length">
           <h2 class="mt-8 font-medium text-xl">期限切れ</h2>

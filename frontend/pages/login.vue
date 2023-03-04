@@ -32,6 +32,9 @@
             ログイン
           </button>
         </div>
+        <div class="mt-4">
+          <nuxt-link class="text-blue-500" to="/register">新規登録</nuxt-link>
+        </div>
       </form>
     </div>
   </div>

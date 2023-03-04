@@ -3,39 +3,26 @@
     <div class="flex justify-center">
       <div class="m-4 w-full">
         <div class="flex mt-8">
-          <h1 class="font-medium text-3xl">教科一覧</h1>
-          <nuxt-link
-            to="/tasks/"
-            class="ml-4 mt-1 font-medium text-2xl text-gray-400"
-            >課題一覧
-          </nuxt-link>
+          <h1 class="font-medium text-3xl">設定</h1>
         </div>
-        <div v-for="subject in subjects.subjects" :key="subject.subjectID">
-          <div v-if="!subject.isArchived">
-            <div
-              :to="'/task/' + subject.subjectID"
-              class="flex items-center mt-3 bg-white border border-gray-100 shadow-lg rounded-xl"
-            >
-              <button
-                class="flex items-center justify-center m-3 mr-1 h-12 pl-4 pr-4 bg-red-600 text-white shadow-lg rounded-lg"
-                @click="postArchiveSubject(subject.subjectID)"
-              >
-                削除
-              </button>
-              <nuxt-link
-                class="flex items-center justify-center m-3 ml-1 mr-2 pl-4 pr-4 h-12 bg-gray-600 text-white shadow-lg rounded-lg"
-                :to="'/subject/' + subject.subjectID"
-              >
-                編集
-              </nuxt-link>
-              <nuxt-link
-                :to="'/subject/' + subject.subjectID"
-                class="p-3 pl-2 text-lg text-current"
-              >
-                {{ subject.subjectName }}
-              </nuxt-link>
-            </div>
-          </div>
+        <div>
+          <ul>
+            <li class="font-medium text-2xl mt-8">
+              <nuxt-link to="/tasks">課題一覧</nuxt-link>
+            </li>
+            <li class="font-medium text-2xl mt-4">
+              <nuxt-link to="/task/0">課題作成</nuxt-link>
+            </li>
+            <li class="font-medium text-2xl mt-4">
+              <nuxt-link to="/subjects">教科一覧</nuxt-link>
+            </li>
+            <li class="font-medium text-2xl mt-4">
+              <nuxt-link to="/subject/0">教科作成</nuxt-link>
+            </li>
+            <li class="font-medium text-2xl mt-4">
+              <button @click="$auth.logout()">ログアウト</button>
+            </li>
+          </ul>
         </div>
         <div class="h-24">
           <!-- 下のメニューバーの高さ分、下に余白を開ける -->
@@ -43,20 +30,12 @@
       </div>
     </div>
     <div class="fixed inset-x-0 flex bottom-0 bg-white h-24">
-      <div class="w-5/12 flex justify-center">
+      <div class="w-10/12 flex justify-center">
         <nuxt-link
           to="/tasks"
           class="flex items-center justify-center m-4 mr-2 h-12 w-full bg-gray-600 text-white shadow-lg rounded-lg"
         >
-          <span class="font-medium text-xl">課題一覧へ</span>
-        </nuxt-link>
-      </div>
-      <div class="w-5/12 flex justify-center">
-        <nuxt-link
-          to="/subject/0"
-          class="flex items-center justify-center m-4 ml-2 h-12 w-full bg-blue-600 text-white shadow-lg rounded-lg"
-        >
-          <span class="font-medium text-xl">教科の追加</span>
+          <span class="font-medium text-xl">課題一覧へ戻る</span>
         </nuxt-link>
       </div>
 
