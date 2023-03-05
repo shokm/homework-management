@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "http://api.shokm.net:8888/$1"
-    }
-  ]
-}
