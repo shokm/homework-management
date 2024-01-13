@@ -63,8 +63,6 @@
 import Vue from 'vue'
 import $axios from '@nuxtjs/axios'
 import $auth from '@nuxtjs/auth-next'
-import $dayjs from '@nuxtjs/dayjs'
-import TaskCard from '@/components/TaskCard.vue'
 
 type SubjectSingle = {
   subjectID: number
@@ -103,7 +101,7 @@ export default Vue.extend({
 
       // POST
       this.$axios
-        .$post('/v1/subject/' + subjectID, this.subjects.subjects[arrayNumber])
+        .post('/v1/subject/' + subjectID, this.subjects.subjects[arrayNumber])
         .catch(() =>
           // 失敗したらJSONを更新して、画面表示を戻す
           this.$set(this.subjects.subjects[arrayNumber], 'isArchived', false)

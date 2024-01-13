@@ -87,9 +87,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import $axios from '@nuxtjs/axios'
-import $auth from '@nuxtjs/auth-next'
-import $dayjs from '@nuxtjs/dayjs'
 
 type SubjectSingle = {
   subjectID: number
