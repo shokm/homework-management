@@ -3,12 +3,12 @@
     <div class="flex justify-center">
       <div class="m-4 w-full">
         <div class="flex mt-8">
-          <h1 class="font-medium text-3xl">教科一覧</h1>
           <nuxt-link
             to="/tasks/"
-            class="ml-4 mt-1 font-medium text-2xl text-gray-400"
+            class="mt-1 font-medium text-2xl text-gray-400"
             >課題一覧
           </nuxt-link>
+          <h1 class="ml-4 font-medium text-3xl">教科一覧</h1>
         </div>
         <div v-for="subject in subjects.subjects" :key="subject.subjectID">
           <div v-if="!subject.isArchived">
@@ -85,7 +85,6 @@ import Vue from 'vue'
 import $axios from '@nuxtjs/axios'
 import $auth from '@nuxtjs/auth-next'
 import $dayjs from '@nuxtjs/dayjs'
-import TaskCard from '@/components/TaskCard.vue'
 
 type SubjectSingle = {
   subjectID: number

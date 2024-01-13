@@ -4,6 +4,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import $auth from '@nuxtjs/auth-next'
 
 export default Vue.extend({
   middleware: 'auth',

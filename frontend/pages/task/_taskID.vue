@@ -93,7 +93,7 @@
           ></div>
           <div class="p-3 pl-2 text-current leading-6">
             <input
-              v-model="$dayjs(task.deadlineAt).format('YYYY-MM-DDThh:mm')"
+              v-model="localDeadlineAt"
               type="datetime-local"
               class="h-12 rounded-lg text-lg text-current p-5 pl-2"
             />
@@ -147,9 +147,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import $axios from '@nuxtjs/axios'
-import $auth from '@nuxtjs/auth-next'
-import $dayjs from '@nuxtjs/dayjs'
 
 type TaskSingle = {
   taskID: number
@@ -181,7 +178,8 @@ export default Vue.extend({
     return {
       task: {} as TaskSingle,
       subjects: {} as SubjectsMultiple,
-      param: Number(this.$route.params.taskID)
+      param: Number(this.$route.params.taskID),
+      localDeadlineAt: ''
     }
   },
   created() {
@@ -189,6 +187,12 @@ export default Vue.extend({
       this.$axios
         .$get('/v1/task/' + this.param)
         .then((response) => (this.task = response))
+        .then(
+          () =>
+            (this.localDeadlineAt = this.$dayjs(this.task.deadlineAt).format(
+              'YYYY-MM-DDTHH:mm'
+            ))
+        )
         .catch(() => (this.param = 0))
     }
     this.$axios
@@ -197,9 +201,17 @@ export default Vue.extend({
   },
   methods: {
     updateTask() {
+      const postTask: TaskSingle = this.task
+      postTask.deadlineAt = this.$dayjs(this.localDeadlineAt).format()
       this.$axios
-        .$post('/v1/task/' + this.param, this.task)
+        .$post('/v1/task/' + this.param, postTask)
         .then((response) => (this.task = response))
+        .then(
+          () =>
+            (this.localDeadlineAt = this.$dayjs(this.task.deadlineAt).format(
+              'YYYY-MM-DDTHH:mm'
+            ))
+        )
         .then(() => history.pushState('', '', './' + this.task.taskID))
         .then(() => (this.param = this.task.taskID))
     }

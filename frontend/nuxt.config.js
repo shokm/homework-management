@@ -8,25 +8,21 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'homework-management',
+    title: 'Studule - 宿題管理アプリ',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-  ],
+  css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-  ],
+  plugins: [],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -60,8 +56,8 @@ export default {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
-      lang: 'ja'
-    }
+      lang: 'ja',
+    },
   },
 
   auth: {
@@ -70,21 +66,24 @@ export default {
     strategies: {
       local: {
         user: {
-          property: false
+          property: false,
         },
         endpoints: {
-          login: { url: '/v1/auth/login', method: 'post', propertyName: 'token' },
+          login: {
+            url: '/v1/auth/login',
+            method: 'post',
+            propertyName: 'token',
+          },
           // logout: { url: '/api/v1/auth/logout', method: 'post' },
           logout: false,
-          user: { url: '/v1/auth/user', method: 'get', propertyName: false }
+          user: { url: '/v1/auth/user', method: 'get', propertyName: false },
         },
         // tokenRequired: true,
         // tokenType: 'bearer'
-      }
-    }
+      },
+    },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-  }
+  build: {},
 }

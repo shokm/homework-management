@@ -90,7 +90,7 @@
                   )
                 "
               >
-                {{ $dayjs(task.deadlineAt).format('YYYY/MM/DD hh:mm') }}
+                {{ $dayjs(task.deadlineAt).format('YYYY/MM/DD HH:mm') }}
               </span>
               <span v-else>----/--/--</span>
             </p>
