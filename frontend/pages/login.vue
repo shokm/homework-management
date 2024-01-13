@@ -84,11 +84,10 @@ export default Vue.extend({
       class: 'bg-gray-50'
     }
   },
-  created() {
-    const apiURL = process.env.MICROCMS_API_URL || ''
+  mounted() {
     this.$axios
-      .$get(apiURL, {
-        headers: { 'X-MICROCMS-API-KEY': process.env.MICROCMS_API_KEY }
+      .$get(this.$config.MICROCMS_API_URL, {
+        headers: { 'X-MICROCMS-API-KEY': this.$config.MICROCMS_API_KEY }
       })
       .then((response) => (this.cmsData = response))
   },

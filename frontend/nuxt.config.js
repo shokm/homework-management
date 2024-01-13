@@ -84,6 +84,12 @@ export default {
     },
   },
 
+  publicRuntimeConfig: {
+    API_URL: process.env.API_URL,
+    MICROCMS_API_URL: process.env.MICROCMS_API_URL,
+    MICROCMS_API_KEY: process.env.MICROCMS_API_KEY,
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 }
