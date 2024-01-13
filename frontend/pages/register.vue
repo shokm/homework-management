@@ -3,11 +3,11 @@
     <div
       class="bg-white shadow-xl rounded-xl md:w-auto w-11/12 md:p-20 p-5 md:m-20 m-5"
     >
-      <h1 class="flex justify-center mb-10 font-medium text-4xl">Register</h1>
+      <h1 class="flex justify-center mb-10 font-medium text-4xl">新規登録</h1>
       <p>{{ message }}</p>
       <form @submit.prevent="registerUser">
         <div class="my-2">
-          <label for="userName">ユーザー名</label>
+          <label for="userName">ユーザー名（半角英数字）</label>
           <br />
           <input
             v-model="user.screenName"

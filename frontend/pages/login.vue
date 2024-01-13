@@ -1,9 +1,12 @@
 <template>
-  <div class="flex justify-center">
+  <div class="md:flex justify-center">
     <div
-      class="bg-white shadow-xl rounded-xl md:w-auto w-11/12 md:p-20 p-5 md:m-20 m-5"
+      class="bg-white shadow-xl rounded-xl md:w-auto w-11/12 md:p-20 p-5 md:mt-20 m-5"
     >
-      <h1 class="flex justify-center mb-10 font-medium text-4xl">Login</h1>
+      <h1 class="flex justify-center mb-5 font-medium text-3xl">
+        Studule - 宿題管理アプリ
+      </h1>
+      <h2 class="flex justify-center mb-5 font-medium text-2xl">ログイン</h2>
       <p>{{ message }}</p>
       <form @submit.prevent="loginUser">
         <div class="my-2">
@@ -35,7 +38,18 @@
         <div class="mt-4">
           <nuxt-link class="text-blue-500" to="/register">新規登録</nuxt-link>
         </div>
+        <p class="mt-4">※デモユーザーのIDとパスワードは「testuser」です。</p>
       </form>
+    </div>
+    <div
+      class="bg-white shadow-xl rounded-xl md:w-80 w-11/12 md:pt-20 p-5 md:mt-20 md:mx-10 m-5"
+    >
+      <h3 class="flex justify-center mb-5 font-medium text-2xl">
+        {{ cmsData.title }}
+      </h3>
+      <div class="prose">
+        <span v-html="cmsData.contents"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -45,6 +59,15 @@ import Vue from 'vue'
 import $axios from '@nuxtjs/axios'
 import $auth from '@nuxtjs/auth-next'
 
+type CmsData = {
+  title: String
+  contents: String
+  createdAt: String
+  publishedAt: String
+  revisedAt: String
+  updatedAt: String
+}
+
 export default Vue.extend({
   data() {
     return {
@@ -52,13 +75,22 @@ export default Vue.extend({
         screenName: '',
         password: ''
       },
-      message: ''
+      message: '',
+      cmsData: {} as CmsData
     }
   },
   head: {
     bodyAttrs: {
       class: 'bg-gray-50'
     }
+  },
+  created() {
+    const apiURL = process.env.MICROCMS_API_URL || ''
+    this.$axios
+      .$get(apiURL, {
+        headers: { 'X-MICROCMS-API-KEY': process.env.MICROCMS_API_KEY }
+      })
+      .then((response) => (this.cmsData = response))
   },
   methods: {
     async loginUser() {
